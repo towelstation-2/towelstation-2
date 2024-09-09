@@ -556,6 +556,8 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 				continue
 		if(z && !(z == ai.z) && (!is_station_level(z) || !is_station_level(ai.z))) //if a Z level was specified, AND the AI is not on the same level, AND either is off the station...
 			continue
+		if(ai.mind.special_role == ROLE_DERELICT_MODSUIT) //Bubber edit - derelict AIs cannot be synced to or detected by normal means
+			continue
 		. += ai
 
 //Find an active ai with the least borgs. VERBOSE PROCNAME HUH!
