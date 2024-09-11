@@ -54,6 +54,8 @@ no power level overlay is currently in the overlays list.
 	/// we warm up and cool down instantly
 	var/instantenous = FALSE
 
+	var/shield_floor = TRUE // Bubber EDIT ADDITION
+
 /datum/armor/field_generator
 	melee = 25
 	bullet = 10
@@ -349,7 +351,8 @@ no power level overlay is currently in the overlays list.
 
 	connected_gens |= found_generator
 	found_generator.connected_gens |= src
-	shield_floor(TRUE)
+	if(shield_floor) // Bubber EDIT ADDITION
+		shield_floor(TRUE)
 	update_appearance()
 
 
