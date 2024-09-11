@@ -15,12 +15,12 @@
 /datum/antagonist/bloodsucker/proc/BuyPower(datum/action/cooldown/bloodsucker/power)
 	for(var/datum/action/cooldown/bloodsucker/current_powers as anything in powers)
 		if(current_powers.type == power.type)
-			return FALSE
+			return null
 	power = new power()
 	powers += power
 	power.Grant(owner.current)
 	log_uplink("[key_name(owner.current)] purchased [power].")
-	return TRUE
+	return power
 
 ///Called when a Bloodsucker loses a power: (power)
 /datum/antagonist/bloodsucker/proc/RemovePower(datum/action/cooldown/bloodsucker/power)
@@ -99,14 +99,14 @@
 ///Disables all powers, accounting for torpor
 /datum/antagonist/bloodsucker/proc/DisableAllPowers(forced = FALSE)
 	for(var/datum/action/cooldown/bloodsucker/power as anything in powers)
-		if(forced || ((power.check_flags & BP_CANT_USE_IN_TORPOR) && HAS_TRAIT_FROM_ONLY(owner.current, TRAIT_NODEATH, BLOODSUCKER_TRAIT)))
+		if(forced || ((power.check_flags & BP_CANT_USE_IN_TORPOR) && is_in_torpor()))
 			if(power.active)
 				power.DeactivatePower()
 
 /datum/antagonist/bloodsucker/proc/SpendRank(mob/living/carbon/human/target, cost_rank = TRUE, blood_cost)
 	if(!owner || !owner.current || !owner.current.client || (cost_rank && bloodsucker_level_unspent <= 0))
 		return
-	SEND_SIGNAL(src, BLOODSUCKER_RANK_UP, target, cost_rank, blood_cost)
+	SEND_SIGNAL(src, COMSIG_BLOODSUCKER_RANK_UP, target, cost_rank, blood_cost)
 
 /datum/antagonist/bloodsucker/proc/GetRank()
 	return bloodsucker_level
@@ -128,10 +128,10 @@
 /datum/antagonist/bloodsucker/proc/free_all_vassals()
 	for(var/datum/antagonist/vassal/all_vassals in vassals)
 		// Skip over any Bloodsucker Vassals, they're too far gone to have all their stuff taken away from them
-		if(all_vassals.owner.has_antag_datum(/datum/antagonist/bloodsucker))
+		if(IS_BLOODSUCKER(all_vassals.owner.current))
 			all_vassals.owner.current.remove_status_effect(/datum/status_effect/agent_pinpointer/vassal_edition)
 			continue
-		if(all_vassals.special_type == REVENGE_VASSAL)
+		if(all_vassals.special_type == REVENGE_VASSAL || !all_vassals.owner)
 			continue
 		all_vassals.owner.add_antag_datum(/datum/antagonist/ex_vassal)
 		all_vassals.owner.remove_antag_datum(/datum/antagonist/vassal)
@@ -196,57 +196,31 @@
 /datum/antagonist/bloodsucker/proc/frenzy_exit_threshold()
 	return FRENZY_THRESHOLD_EXIT + (humanity_lost * 10)
 
-/datum/antagonist/bloodsucker/proc/add_signals_to_heart(mob/living/carbon/human/current_mob)
-	if(heart?.resolve())
-		remove_signals_from_heart(current_mob)
-	var/organ = current_mob.get_organ_slot(ORGAN_SLOT_HEART)
-	heart = WEAKREF(organ)
-	RegisterSignal(organ, COMSIG_ORGAN_REMOVED, PROC_REF(on_organ_removal))
-	RegisterSignal(organ, COMSIG_ORGAN_BEING_REPLACED, PROC_REF(before_organ_replace))
+// /datum/antagonist/bloodsucker/proc/add_signals_to_heart(mob/living/carbon/human/current_mob)
+// 	if(heart?.resolve())
+// 		remove_signals_from_heart(current_mob)
+// 	var/organ = current_mob.get_organ_slot(ORGAN_SLOT_HEART)
+// 	heart = WEAKREF(organ)
+// 	RegisterSignal(organ, COMSIG_ORGAN_REMOVED, PROC_REF(on_organ_removal))
+// 	RegisterSignal(organ, COMSIG_ORGAN_BEING_REPLACED, PROC_REF(before_organ_replace))
 
-/datum/antagonist/bloodsucker/proc/remove_signals_from_heart(mob/living/carbon/human/current_mob)
-	var/organ = heart.resolve()
-	if(!organ)
-		return
-	UnregisterSignal(organ, COMSIG_ORGAN_REMOVED)
-	UnregisterSignal(organ, COMSIG_ORGAN_BEING_REPLACED)
-	heart = null
+// /datum/antagonist/bloodsucker/proc/remove_signals_from_heart(mob/living/carbon/human/current_mob)
+// 	var/organ = heart.resolve()
+// 	if(!organ)
+// 		return
+// 	UnregisterSignal(organ, COMSIG_ORGAN_REMOVED)
+// 	UnregisterSignal(organ, COMSIG_ORGAN_BEING_REPLACED)
+// 	heart = null
 
 /datum/antagonist/bloodsucker/proc/on_organ_removal(obj/item/organ/organ, mob/living/carbon/old_owner)
 	SIGNAL_HANDLER
 	if(old_owner.get_organ_slot(ORGAN_SLOT_HEART) || organ?.slot != ORGAN_SLOT_HEART || !old_owner.dna.species.mutantheart)
 		return
-	remove_signals_from_heart(old_owner)
-	// You don't run bloodsucker life without a heart or brain
-	RegisterSignal(old_owner, COMSIG_ENTER_COFFIN, PROC_REF(regain_heart))
-	UnregisterSignal(old_owner, COMSIG_LIVING_LIFE)
 	DisableAllPowers(TRUE)
 	if(HAS_TRAIT_FROM_ONLY(old_owner, TRAIT_NODEATH, BLOODSUCKER_TRAIT))
 		torpor_end(TRUE)
 	to_chat(old_owner, span_userdanger("You have lost your [organ?.slot ? organ.slot : "heart"]!"))
 	to_chat(old_owner, span_warning("This means you will no longer enter torpor nor revive from death, and you will no longer heal any damage, nor can you use your abilities."))
-
-/datum/antagonist/bloodsucker/proc/on_organ_gain(mob/living/carbon/human/current_mob, obj/item/organ/replacement)
-	SIGNAL_HANDLER
-	if(replacement.slot != ORGAN_SLOT_HEART)
-		return
-	// Shit might get really fucked up. Let's try to fix things if it does
-	if(current_mob != owner.current)
-		UnregisterSignal(current_mob, COMSIG_CARBON_GAIN_ORGAN)
-		RegisterSignal(owner.current, COMSIG_CARBON_GAIN_ORGAN)
-		add_signals_to_heart(owner.current)
-		RegisterSignal(owner.current, COMSIG_LIVING_LIFE, PROC_REF(LifeTick), TRUE)
-		CRASH("What the fuck, somehow called on_organ_gain signal on [src] without current_mob being the antag datum's owner?")
-	UnregisterSignal(current_mob, COMSIG_ENTER_COFFIN)
-	RegisterSignal(current_mob, COMSIG_LIVING_LIFE, PROC_REF(LifeTick), TRUE) // overriding here due to the fact this can without removing the signal due to before_organ_replace()
-	add_signals_to_heart(current_mob)
-
-/// This handles regen_organs replacing organs, without this the bloodsucker would die for a moment due to their heart being removed for a moment
-/datum/antagonist/bloodsucker/proc/before_organ_replace(obj/item/organ/old_organ, obj/item/organ/new_organ)
-	SIGNAL_HANDLER
-	if(new_organ.slot != ORGAN_SLOT_HEART)
-		return
-	remove_signals_from_heart(owner.current)
 
 /// checks if we're a brainmob inside a brain & the brain is inside a head
 /datum/antagonist/bloodsucker/proc/is_head(mob/living/poor_fucker)
@@ -273,9 +247,84 @@
 		return
 	SetBloodVolume(blood)
 
+/datum/antagonist/bloodsucker/proc/admin_rankup(mob/admin)
+	to_chat(admin, span_notice("[owner.current] has been given a free level"))
+	RankUp()
+
+/datum/antagonist/bloodsucker/proc/admin_give_power(mob/admin)
+	var/power_type = tgui_input_list(admin, "What power to give [owner.current]?", "Might is right.", all_bloodsucker_powers)
+	if(!power_type)
+		return
+	var/datum/action/cooldown/bloodsucker/power = BuyPower(power_type)
+	power.upgrade_power()
+
+/datum/antagonist/bloodsucker/proc/admin_remove_power(mob/admin)
+	var/datum/action/cooldown/bloodsucker/power = tgui_input_list(admin, "What power to remove from [owner.current]?", "Might is right.", powers)
+	if(!power)
+		return
+	RemovePower(power)
+
+/datum/antagonist/bloodsucker/proc/admin_set_power_level(mob/admin)
+	var/list/valid_powers = list()
+	for(var/datum/action/cooldown/bloodsucker/power as anything in powers)
+		if(power.purchase_flags & BLOODSUCKER_DEFAULT_POWER)
+			continue
+		valid_powers += power
+	var/datum/action/cooldown/bloodsucker/power = tgui_input_list(admin, "What power to set the level of for [owner.current]?", "Might is right.", valid_powers)
+	if(!power)
+		return
+	var/level = tgui_input_number(admin, "What level to set [power] to?", "Might is right.", power.level_current, 30, 0)
+	if(level == null)
+		return
+	power.level_current = level
+	power.on_power_upgrade()
+
 /datum/antagonist/bloodsucker/proc/regain_heart(mob/coffin_dweller, obj/structure/closet/crate/coffin/coffin, mob/user)
 	SIGNAL_HANDLER
 	var/obj/item/organ/heart = locate(/obj/item/organ/internal/heart) in coffin.contents
-	if(heart && !coffin_dweller.get_organ_slot(ORGAN_SLOT_HEART))
+	if(heart && !coffin_dweller.get_organ_slot(ORGAN_SLOT_HEART) && heart.Insert(coffin_dweller))
 		to_chat(span_warning("You have regained your heart!"))
-		heart.Insert(coffin_dweller)
+
+/datum/antagonist/bloodsucker/proc/allow_head_to_talk(mob/speaker, message, ignore_spam, forced)
+	if(!is_head(speaker) || speaker.stat >= UNCONSCIOUS)
+		return
+	return COMPONENT_IGNORE_CAN_SPEAK
+
+/datum/antagonist/bloodsucker/proc/shake_head_on_talk(mob/speaker, speech_args)
+	var/obj/head = is_head(speaker)
+	if(!head)
+		return
+	var/animation_time = max(2, length_char(speech_args[SPEECH_MESSAGE]) * 0.5)
+	head.Shake(duration = animation_time)
+
+/datum/antagonist/bloodsucker/proc/stake_can_kill()
+	if(owner.current.IsSleeping() || owner.current.stat >= UNCONSCIOUS || is_in_torpor())
+		for(var/stake in get_stakes())
+			var/obj/item/stake/killin_stake = stake
+			if(killin_stake?.kills_blodsuckers)
+				return TRUE
+	return FALSE
+
+/datum/antagonist/bloodsucker/proc/am_staked()
+	var/obj/item/bodypart/chosen_bodypart = owner.current.get_bodypart(BODY_ZONE_CHEST)
+	if(!chosen_bodypart)
+		return FALSE
+	var/obj/item/stake/stake = locate() in chosen_bodypart.embedded_objects
+	return stake
+
+/datum/antagonist/bloodsucker/proc/get_stakes()
+	var/obj/item/bodypart/chosen_bodypart = owner.current.get_bodypart(BODY_ZONE_CHEST)
+	if(!chosen_bodypart)
+		return FALSE
+	var/list/stakes = list()
+	for(var/obj/item/embedded_stake in chosen_bodypart.embedded_objects)
+		if(istype(embedded_stake, /obj/item/stake))
+			stakes += list(embedded_stake)
+	return stakes
+
+/datum/antagonist/bloodsucker/proc/on_staked(atom/target, forced)
+	if(stake_can_kill())
+		FinalDeath()
+	else
+		to_chat(target, span_userdanger("You have been staked! Your powers are useless, your death forever, while it remains in place."))
+		target.balloon_alert(target, "you have been staked!")
