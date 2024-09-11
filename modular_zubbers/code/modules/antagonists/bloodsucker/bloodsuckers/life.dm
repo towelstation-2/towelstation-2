@@ -271,10 +271,6 @@
 	if(owner.current.getFireLoss() >= owner.current.maxHealth * 2.5)
 		FinalDeath()
 		return
-	// Staked with a silver stake while "Temp Death" or Asleep
-	if(owner.current.StakeCanKillMe())
-		FinalDeath()
-		return
 	// Temporary Death? Convert to Torpor.
 	if(HAS_TRAIT_FROM_ONLY(owner.current, TRAIT_NODEATH, BLOODSUCKER_TRAIT) || isbrain(owner.current))
 		return
