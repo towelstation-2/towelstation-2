@@ -7,5 +7,10 @@
 		/area/station/cargo/miningfoundry/event_protected,
 
 		/area/ruin/unpowered/primitive_catgirl_den,
+
+		/area/ruin/space/has_grav/bubbers/dauntless_space,
+		/area/ruin/space/has_grav/bubbers/dauntless,
+
+		/area/station/commons/dorms,
 	))
 	. = ..()
