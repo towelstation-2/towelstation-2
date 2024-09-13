@@ -24,7 +24,7 @@
 	return ..()
 
 /obj/machinery/abductor/experiment/mouse_drop_receive(mob/target, mob/user, params)
-	if(!ishuman(target) || isabductor(target))
+	if(!ishuman(target) || HAS_MIND_TRAIT(target, TRAIT_ABDUCTOR_TRAINING)) // # BUBBER CHANGE, abductor machinery checks for abductor training
 		return
 	close_machine(target)
 
@@ -34,7 +34,8 @@
 
 /obj/machinery/abductor/experiment/close_machine(mob/target, density_to_set = TRUE)
 	for(var/A in loc)
-		if(isabductor(A))
+		var/mob/mob_target = A // BUBBER CHANGE START, abductor machinery checks for abductor training
+		if(ismob(A) && HAS_MIND_TRAIT(mob_target, TRAIT_ABDUCTOR_TRAINING)) // # BUBBER END
 			return
 	if(state_open && !panel_open)
 		..(target)
@@ -196,3 +197,18 @@
 /obj/machinery/abductor/experiment/update_icon_state()
 	icon_state = "experiment[state_open ? "-open" : null]"
 	return ..()
+
+
+/obj/machinery/abductor/experiment/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	. = ..()
+	var/obj/item/abductor/gizmo/science_tool = tool
+	if(!HAS_TRAIT(user, TRAIT_ABDUCTOR_SCIENTIST_TRAINING) || !istype(science_tool))
+		return NONE
+	if(science_tool?.console && science_tool.console.team_number != null)
+		balloon_alert(user, "linked [src] to controller console!")
+		team_number = science_tool.console.team_number
+		science_tool.console.experiment = src
+		console = science_tool.console
+	else
+		balloon_alert(user, "[tool] is not linked to controller console!")
+	return ITEM_INTERACT_SUCCESS

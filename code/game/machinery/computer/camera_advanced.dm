@@ -133,7 +133,7 @@
 	return can_interact(user)
 
 /obj/machinery/computer/camera_advanced/abductor/can_use(mob/user)
-	if(!isabductor(user))
+	if(user && !HAS_MIND_TRAIT(user, TRAIT_ABDUCTOR_TRAINING)) // # BUBBER CHANGE, abductor machinery checks for abductor training
 		return FALSE
 	return ..()
 
@@ -178,6 +178,7 @@
 			eyeobj.setLoc(camera_location)
 		else
 			unset_machine()
+			to_chat(user, span_warning("[src] could not find a valid camera to connect to."))
 	else
 		give_eye_control(L)
 		eyeobj.setLoc(eyeobj.loc)
