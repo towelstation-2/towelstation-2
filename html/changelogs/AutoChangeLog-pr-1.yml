@@ -1,0 +1,5 @@
+author: "xPokee"
+delete-after: True
+changes:
+  - rscadd: "added a new plushie"
+  - image: "added a icon for the new plushie"
