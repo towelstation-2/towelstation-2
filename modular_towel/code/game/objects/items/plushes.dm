@@ -30,10 +30,10 @@
 	attack_verb_simple = list("weh'd", "whimpered", "panted")
 	squeak_override = list('modular_skyrat/modules/emotes/sound/voice/awoo.ogg' = 1)
 
-/obj/item/toy/plush/wagging_catgirl
-	name = "Wagging catgirl plushie"
-	desc = "A cute looking catgirl plushie. Comes with a wagging tail!"
+/obj/item/toy/plush/frisky_kitty
+	name = "Frisky kitty plushie"
+	desc = "It smells of catnip and distinct cherry perfume. Surely a plushy shouldn't have a skirt this short?"
 	icon = 'modular_towel/icons/obj/toys/plushes.dmi'
-	icon_state = "waggingcatgirl"
+	icon_state = "friskykitty"
 	attack_verb_simple = list("purred", "meowed", "mggaowed")
-	squeak_override = list('modular_skyrat/modules/emotes/sound/voice/mggaow.ogg' = 1)
+	squeak_override = list('modular_towel/sound/toys/shortpurr.ogg' = 1)

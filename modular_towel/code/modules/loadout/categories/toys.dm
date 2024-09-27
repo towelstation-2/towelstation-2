@@ -15,5 +15,5 @@
 	item_path = /obj/item/toy/plush/shy_collie
 
 /datum/loadout_item/toys/tomoko_plush
-	name = "Wagging Catgirl Plushie"
-	item_path = /obj/item/toy/plush/wagging_catgirl
+	name = "Frisky Kitty Plushie"
+	item_path = /obj/item/toy/plush/frisky_kitty
