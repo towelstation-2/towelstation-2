@@ -551,7 +551,7 @@
 	return "Are you having a happy [name]?"
 
 // OCTOBER
-
+/*
 /datum/holiday/animal
 	name = "Animal's Day"
 	begin_day = 4
@@ -581,11 +581,11 @@
 	return "On this day in 1945, the United Nations was founded, laying the foundation for humanity's united government!"
 
 /datum/holiday/un_day/getStationPrefix()
-	return pick("United", "Cooperation", "Humanitarian")
+	return pick("United", "Cooperation", "Humanitarian")*/
 
 /datum/holiday/halloween
 	name = HALLOWEEN
-	begin_day = 29
+	begin_day = 1
 	begin_month = OCTOBER
 	end_day = 2
 	end_month = NOVEMBER
