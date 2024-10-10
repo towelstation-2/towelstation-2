@@ -1,5 +1,5 @@
 /datum/round_event_control/anomaly
-	min_players = 15 // Destructive events are 15 player minimum
+	min_players = 10 // Most destructive anomalies are 10 player minimum, now consistent
 
 /datum/round_event_control/bureaucratic_error
 	min_players = 5 // Prevents it from firing in the twilight zone times where rounds will go on for like 6 hours
