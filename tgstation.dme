@@ -8583,6 +8583,7 @@
 #include "modular_skyrat\modules\xenos_skyrat_redo\code\xeno_types\warrior.dm"
 #include "modular_towel\code\game\objects\items\plushes.dm"
 #include "modular_towel\code\modules\bluespace_pet_carrier\code\pet_carrier.dm"
+#include "modular_towel\code\modules\events\event_overrides.dm"
 #include "modular_towel\code\modules\loadout\categories\toys.dm"
 #include "modular_towel\code\modules\modular_food\smores\smores.dm"
 #include "modular_towel\code\modules\vending\lustwish.dm"
