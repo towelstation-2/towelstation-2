@@ -56,12 +56,11 @@
 	//	owner.remove_status_effect(src)//At the moment, a user can enthrall themselves, toggle this back in if that should be removed.
 	RegisterSignal(owner, COMSIG_LIVING_RESIST, .proc/owner_resist) //Do resistance calc if resist is pressed#
 	RegisterSignal(owner, COMSIG_MOVABLE_HEAR, .proc/owner_hear)
-	mental_capacity = 500 - M.getOrganLoss(ORGAN_SLOT_BRAIN)//It's their brain!
-	lewd = (owner.client?.prefs.cit_toggles & HYPNO) && (master.client?.prefs.cit_toggles & HYPNO)
+	mental_capacity = 500 - M.get_organ_loss(ORGAN_SLOT_BRAIN)//It's their brain!
+	lewd = (owner.client?.prefs?.read_preference(/datum/preference/toggle/erp/sex_toy)) && (master.client?.prefs?.read_preference(/datum/preference/toggle/erp/sex_toy))
 	var/message = "[(lewd ? "I am a good pet for [enthrallGender]." : "[master] is a really inspirational person!")]"
-	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "enthrall", /datum/mood_event/enthrall, message)
+	M.add_mood_event("enthrall", /datum/mood_event/enthrall, message)
 	to_chat(owner, "<span class='[(lewd ?"big velvet":"big warning")]'><b>You feel inexplicably drawn towards [master], their words having a demonstrable effect on you. It seems the closer you are to them, the stronger the effect is. However you aren't fully swayed yet and can resist their effects by repeatedly resisting as much as you can!</b></span>")
-	log_reagent("FERMICHEM: MKULTRA: Status applied on [owner] ckey: [owner.key] with a master of [master] ckey: [enthrallID].")
 	SSblackbox.record_feedback("tally", "fermi_chem", 1, "Enthrall attempts")
 	return ..()
 
@@ -91,8 +90,7 @@
 	//phase specific events
 	switch(phase)
 		if(-1)//fully removed
-			SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "enthrall")
-			log_reagent("FERMICHEM: MKULTRA: Status REMOVED from [owner] ckey: [owner.key] with a master of [master] ckey: [enthrallID].")
+			M.clear_mood_event("enthrall")
 			owner.remove_status_effect(src)
 			return
 		if(0)// sleeper agent
@@ -133,7 +131,6 @@
 				else
 					to_chat(owner, "<span class='big nicegreen'><i>You are unable to put up a resistance any longer, and now are under the influence of [master]. However you find that in your intoxicated state you are unable to resort to violence. Equally you are unable to commit suicide, even if ordered to, as you cannot follow [master] in death. </i></span>")
 				to_chat(master, "<span class='notice'><i>Your [(lewd?"pet":"follower")] [owner] appears to have fully fallen under your sway.</i></span>")
-				log_reagent("FERMICHEM: MKULTRA: Status on [owner] ckey: [owner.key] has been fully entrhalled (state 3) with a master of [master] ckey: [enthrallID].")
 				SSblackbox.record_feedback("tally", "fermi_chem", 1, "thralls fully enthralled.")
 			else if (resistanceTally > 200)
 				enthrallTally *= 0.5
@@ -154,13 +151,13 @@
 			if(lewd && prob(1) && !customEcho)
 				to_chat(owner, "<span class='love'><i>[pick("I belong to [enthrallGender].", "[enthrallGender] knows whats best for me.", "Obedence is pleasure.",  "I exist to serve [enthrallGender].", "[enthrallGender] is so dominant, it feels right to obey them.")].</i></span>")
 		if (4) //mindbroken
-			if (mental_capacity >= 499 && (owner.getOrganLoss(ORGAN_SLOT_BRAIN) <=0 || HAS_TRAIT(M, TRAIT_MINDSHIELD)) && !owner.reagents.has_reagent(/datum/reagent/fermi/enthrall))
+			if (mental_capacity >= 499 && (owner.get_organ_loss(ORGAN_SLOT_BRAIN) <=0 || HAS_TRAIT(M, TRAIT_MINDSHIELD)) && !owner.reagents.has_reagent(/datum/reagent/fermi/enthrall))
 				phase = 2
 				mental_capacity = 500
 				customTriggers = list()
 				to_chat(owner, "<span class='notice'><i>Your mind starts to heal, fixing the damage caused by the massive amounts of chem injected into your system earlier, returning clarity to your mind. Though, you still feel drawn towards [master]'s words...'</i></span>")
-				M.slurring = 0
-				M.confused = 0
+				M.set_slurring(0)
+				M.set_confusion(0)
 				resistGrowth = 0
 			else
 				if (cooldown > 0)
@@ -190,17 +187,17 @@
 			if(withdrawalTick > 0)
 				withdrawalTick -= 1
 			//calming effects
-			M.hallucination = max(0, M.hallucination - 5)
-			M.stuttering = max(0, M.stuttering - 5)
-			M.jitteriness = max(0, M.jitteriness - 5)
-			if(owner.getOrganLoss(ORGAN_SLOT_BRAIN) >=20)
+			M.set_hallucinations(0)
+			M.set_stutter(0)
+			M.set_jitter(0)
+			if(owner.get_organ_loss(ORGAN_SLOT_BRAIN) >=20)
 				owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, -0.2)
 			if(withdrawal == TRUE)
 				REMOVE_TRAIT(owner, TRAIT_PACIFISM, "MKUltra")
-				SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "EnthMissing1")
-				SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "EnthMissing2")
-				SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "EnthMissing3")
-				SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "EnthMissing4")
+				M.clear_mood_event("EnthMissing1")
+				M.clear_mood_event("EnthMissing2")
+				M.clear_mood_event("EnthMissing3")
+				M.clear_mood_event("EnthMissing4")
 				withdrawal = FALSE
 		if(9 to INFINITY)//If they're not nearby, enable withdrawl effects.
 			withdrawal = TRUE
@@ -219,7 +216,7 @@
 					to_chat(owner, "<i>[(lewd?"[enthrallGender]":"[master]")] will surely be back soon</i>") //denial
 			if(36)
 				var/message = "[(lewd?"I feel empty when [enthrallGender]'s not around..":"I miss [master]'s presence")]"
-				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "EnthMissing1", /datum/mood_event/enthrallmissing1, message)
+				M.add_mood_event("EnthMissing1", /datum/mood_event/enthrallmissing1, message)
 			if(37 to 65)//barganing
 				if(prob(10))
 					to_chat(owner, "<i>They are coming back, right...?</i>")
@@ -229,24 +226,24 @@
 						to_chat(owner, "<i>I just need to be a good pet for [enthrallGender], they'll surely return if I'm a good pet.</i>")
 					owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, -1.5)
 			if(66)
-				SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "EnthMissing1")
+				M.clear_mood_event("EnthMissing1")
 				var/message = "[(lewd?"I feel so lost in this complicated world without [enthrallGender]..":"I have to return to [master]!")]"
 				to_chat(owner, "<span class='warning'>You start to feel really angry about how you're not with [(lewd?"your [enthrallGender]":"[master]")]!</span>")
-				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "EnthMissing2", /datum/mood_event/enthrallmissing2, message)
-				owner.stuttering += 50
-				owner.jitteriness += 250
+				M.add_mood_event("EnthMissing2", /datum/mood_event/enthrallmissing2, message)
+				owner.adjust_stutter(30 SECONDS)
+				owner.adjust_jitter(150 SECONDS)
 			if(67 to 89) //anger
 				if(prob(10))
-					addtimer(CALLBACK(M, /mob/verb/a_intent_change, INTENT_HARM), 2)
+					addtimer(CALLBACK(M.set_combat_mode(TRUE)), 2)
 					addtimer(CALLBACK(M, /mob/proc/click_random_mob), 2)
 					if(lewd)
 						to_chat(owner, "<span class='warning'>You are overwhelmed with anger at the lack of [enthrallGender]'s presence and suddenly lash out!</span>")
 					else
 						to_chat(owner, "<span class='warning'>You are overwhelmed with anger and suddenly lash out!</span>")
 			if(90)
-				SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "EnthMissing2")
+				M.clear_mood_event("EnthMissing2")
 				var/message = "[(lewd?"Where are you [enthrallGender]??!":"I need to find [master]!")]"
-				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "EnthMissing3", /datum/mood_event/enthrallmissing3, message)
+				M.add_mood_event("EnthMissing3", /datum/mood_event/enthrallmissing3, message)
 				if(lewd)
 					to_chat(owner, "<span class='warning'><i>You need to find your [enthrallGender] at all costs, you can't hold yourself back anymore!</i></span>")
 				else
@@ -254,14 +251,14 @@
 			if(91 to 100)//depression
 				if(prob(10))
 					M.gain_trauma_type(BRAIN_TRAUMA_MILD)
-					owner.stuttering += 35
-					owner.jitteriness += 35
+					owner.adjust_stutter(15 SECONDS)
+					owner.adjust_jitter(15 SECONDS)
 				else if(prob(25))
-					M.hallucination += 10
+					M.adjust_hallucinations(10 SECONDS)
 			if(101)
-				SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "EnthMissing3")
+				M.clear_mood_event("EnthMissing3")
 				var/message = "[(lewd?"I'm all alone, It's so hard to continute without [enthrallGender]...":"I really need to find [master]!!!")]"
-				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "EnthMissing4", /datum/mood_event/enthrallmissing4, message)
+				M.add_mood_event("EnthMissing4", /datum/mood_event/enthrallmissing4, message)
 				to_chat(owner, "<span class='warning'><i>You can hardly find the strength to continue without [(lewd?"your [enthrallGender]":"[master]")].</i></span>")
 				M.gain_trauma_type(BRAIN_TRAUMA_SEVERE)
 			if(102 to 140) //depression 2, revengeance
@@ -273,8 +270,8 @@
 					else
 						to_chat(owner, "<span class='warning'><i>You are overwheled with withdrawl from [master].</i></span>")
 					owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1)
-					owner.stuttering += 35
-					owner.jitteriness += 35
+					owner.adjust_stutter(15 SECONDS)
+					owner.adjust_jitter(15 SECONDS)
 					if(prob(10))//2% chance
 						switch(rand(1,5))//Now let's see what hopefully-not-important part of the brain we cut off
 							if(1 to 3)
@@ -296,7 +293,7 @@
 							to_chat(owner, "<i><span class='small green'>You feel your mental functions slowly begin to return.</i></span>")
 				if(prob(5))
 					owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1)
-					M.hallucination += 30
+					M.adjust_hallucinations(10 SECONDS)
 
 		withdrawalTick += 0.5//Enough to leave you with a major brain trauma, but not kill you.
 
@@ -332,7 +329,7 @@
 			if (statusStrength < 0)
 				status = null
 				owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/mkultra)
-				owner.DefaultCombatKnockdown(50)
+				owner.StaminaKnockdown(50)
 				to_chat(owner, "<span class='notice'><i>Your body gives out as the adrenaline in your system runs out.</i></span>")
 			else
 				statusStrength -= 1
@@ -380,13 +377,13 @@
 /datum/status_effect/chem/enthrall/on_remove()
 	var/mob/living/carbon/M = owner
 	M.mind.remove_antag_datum(/datum/antagonist/brainwashed)
-	SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "enthrall")
-	SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "enthrallpraise")
-	SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "enthrallscold")
-	SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "EnthMissing1")
-	SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "EnthMissing2")
-	SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "EnthMissing3")
-	SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "EnthMissing4")
+	M.clear_mood_event("enthrall")
+	M.clear_mood_event("enthrallpraise")
+	M.clear_mood_event("enthrallscold")
+	M.clear_mood_event("EnthMissing1")
+	M.clear_mood_event("EnthMissing2")
+	M.clear_mood_event("EnthMissing3")
+	M.clear_mood_event("EnthMissing4")
 	UnregisterSignal(M, COMSIG_LIVING_RESIST)
 	UnregisterSignal(owner, COMSIG_MOVABLE_HEAR)
 	REMOVE_TRAIT(owner, TRAIT_PACIFISM, "MKUltra")
@@ -405,14 +402,12 @@
 		var/cached_trigger = lowertext(trigger)
 		if (findtext(raw_message, cached_trigger))//if trigger1 is the message
 			cTriggered = 5 //Stops triggerparties and as a result, stops servercrashes.
-			log_reagent("FERMICHEM: MKULTRA: [owner] ckey: [owner.key] has been triggered with [cached_trigger] from [hearing_args[HEARING_SPEAKER]] saying: \"[hearing_args[HEARING_MESSAGE]]\". (their master being [master] ckey: [enthrallID].)")
 
 			//Speak (Forces player to talk)
 			if (lowertext(customTriggers[trigger][1]) == "speak")//trigger2
 				var/saytext = "Your mouth moves on it's own before you can even catch it."
 				addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, C, "<span class='notice'><i>[saytext]</i></span>"), 5)
 				addtimer(CALLBACK(C, /atom/movable/proc/say, "[customTriggers[trigger][2]]"), 5)
-				log_reagent("FERMICHEM: MKULTRA: [owner] ckey: [owner.key] has been forced to say: \"[customTriggers[trigger][2]]\" from previous trigger.")
 
 
 			//Echo (repeats message!) allows customisation, but won't display var calls! Defaults to hypnophrase.
@@ -425,16 +420,16 @@
 				if (lewd && ishuman(C))
 					var/mob/living/carbon/human/H = C
 					H.adjust_arousal(5)
-				C.jitteriness += 100
-				C.stuttering += 25
-				C.DefaultCombatKnockdown(60)
+				C.adjust_jitter(10 SECONDS)
+				C.adjust_stutter(5 SECONDS)
+				C.StaminaKnockdown(60)
 				C.Stun(60)
 				to_chat(owner, "<span class='warning'><i>Your muscles seize up, then start spasming wildy!</i></span>")
 
 			//kneel (knockdown)
 			else if (lowertext(customTriggers[trigger]) == "kneel")//as close to kneeling as you can get, I suppose.
 				to_chat(owner, "<span class='notice'><i>You drop to the ground unsurreptitiously.</i></span>")
-				C.lay_down()
+				C.toggle_resting()
 
 			//strip (some) clothes
 			else if (lowertext(customTriggers[trigger]) == "strip")//This wasn't meant to just be a lewd thing oops.
@@ -450,7 +445,6 @@
 				var/mob/living/carbon/human/o = owner
 				o.apply_status_effect(/datum/status_effect/trance, 200, TRUE)
 				tranceTime = 50
-				log_reagent("FERMICHEM: MKULTRA: [owner] ckey: [owner.key] has been tranced from previous trigger.")
 
 	return
 
@@ -514,9 +508,9 @@
 		deltaResist *= 1.5
 	//Antag resistance
 	//cultists are already brainwashed by their god
-	if(iscultist(owner))
+	if(IS_CULTIST(owner))
 		deltaResist *= 1.3
-	else if (is_servant_of_ratvar(owner))
+	else if (IS_CLOCK(owner))
 		deltaResist *= 1.3
 	//antags should be able to resist, so they can do their other objectives. This chem does frustrate them, but they've all the tools to break free when an oportunity presents itself.
 	else if (owner.mind.assigned_role in GLOB.antagonists)
@@ -524,11 +518,8 @@
 
 	//role resistance
 	//Chaplains are already brainwashed by their god
-	if(owner.mind.assigned_role == "Preacher")
+	if(owner.mind.assigned_role == "Chaplain")
 		deltaResist *= 1.2
-	//Command staff has authority,
-	if(owner.mind.assigned_role in GLOB.command_positions)
-		deltaResist *= 1.1
 	//Chemists should be familiar with drug effects
 	if(owner.mind.assigned_role == "Chemist")
 		deltaResist *= 1.2

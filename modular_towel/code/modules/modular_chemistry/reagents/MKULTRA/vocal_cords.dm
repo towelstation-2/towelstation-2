@@ -3,25 +3,26 @@
 //////////////////////////////////////
 
 //Heavily modified voice of god code
-/obj/item/organ/vocal_cords/velvet
+/obj/item/organ/internal/vocal_cords/velvet
 	name = "Velvet chords"
 	desc = "The voice spoken from these just make you want to drift off, sleep and obey."
+	icon = 'modular_towel/code/modules/modular_chemistry/reagents/MKULTRA/vocal_cords.dmi'
 	icon_state = "velvet_chords"
 	actions_types = list(/datum/action/item_action/organ_action/velvet)
 	spans = list("velvet")
 
 /datum/action/item_action/organ_action/velvet
 	name = "Velvet chords"
-	var/obj/item/organ/vocal_cords/velvet/cords = null
+	var/obj/item/organ/internal/vocal_cords/velvet/cords = null
 
 /datum/action/item_action/organ_action/velvet/New()
 	..()
 	cords = target
 
-/datum/action/item_action/organ_action/velvet/IsAvailable(silent = FALSE)
+/datum/action/item_action/organ_action/velvet/IsAvailable(feedback = TRUE)
 	return TRUE
 
-/datum/action/item_action/organ_action/velvet/Trigger()
+/datum/action/item_action/organ_action/velvet/Trigger(trigger_flags)
 	. = ..()
 	var/command = input(owner, "Speak in a sultry tone", "Command")
 	if(QDELETED(src) || QDELETED(owner))
@@ -30,10 +31,10 @@
 		return
 	owner.say(".x[command]")
 
-/obj/item/organ/vocal_cords/velvet/can_speak_with()
+/obj/item/organ/internal/vocal_cords/velvet/can_speak_with()
 	return TRUE
 
-/obj/item/organ/vocal_cords/velvet/handle_speech(message) //actually say the message
+/obj/item/organ/internal/vocal_cords/velvet/handle_speech(message) //actually say the message
 	owner.say(message, spans = spans, sanitize = FALSE)
 	velvetspeech(message, owner, 1)
 
@@ -52,7 +53,7 @@
 	message = lowertext(message)
 	var/list/mob/living/listeners = list()
 	for(var/mob/living/L in get_hearers_in_view(8, user))
-		if(L.can_hear() && !L.anti_magic_check(FALSE, TRUE) && L.stat != DEAD)
+		if(L.can_hear() && L.stat != DEAD)
 			if(L.has_status_effect(/datum/status_effect/chem/enthrall))//Check to see if they have the status
 				var/datum/status_effect/chem/enthrall/E = L.has_status_effect(/datum/status_effect/chem/enthrall)//Check to see if pet is on cooldown from last command and if the master is right
 				if(E.master != user)
@@ -76,19 +77,13 @@
 	// Not sure I want to give extra power to anyone at the moment...? We'll see how it turns out
 	if(user.mind)
 		//Chaplains are very good at indoctrinating
-		if(user.mind.assigned_role == "Preacher")
+		if(user.mind.assigned_role == "Chaplain")
 			power_multiplier *= 1.2
-		//Command staff has authority
-		if(user.mind.assigned_role in GLOB.command_positions)
-			power_multiplier *= 1.1
-
 
 	//Cultists are closer to their gods and are better at indoctrinating
-	if(iscultist(user))
+	if(IS_CULTIST(user))
 		power_multiplier *= 1.2
-	else if (is_servant_of_ratvar(user))
-		power_multiplier *= 1.2
-	else if (is_devil(user))//The devil is supposed to be seductive, right?
+	else if (IS_CLOCK(user))
 		power_multiplier *= 1.2
 
 	//range = 0.5 - 1.4~
@@ -125,10 +120,6 @@
 		listeners = specific_listeners
 		//power_multiplier *= (1 + (1/specific_listeners.len)) //Put this is if it becomes OP, power is judged internally on a thrall, so shouldn't be nessicary.
 		message = copytext(message, length(found_string) + 1)//I have no idea what this does
-
-	var/obj/item/organ/tongue/T = user.getorganslot(ORGAN_SLOT_TONGUE)
-	if (T.name == "fluffy tongue") //If you sound hillarious, it's hard to take you seriously. This is a way for other players to combat/reduce their effectiveness.
-		power_multiplier *= 0.75
 
 	if(debug == TRUE)
 		to_chat(world, "[user]'s power is [power_multiplier].")
@@ -203,7 +194,7 @@
 				continue
 			if (E.lewd)
 				addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, L, "<span class='love'>[E.enthrallGender] has praised me!!</span>"), 5)
-				if(HAS_TRAIT(L, TRAIT_MASO))
+				if(HAS_TRAIT(L, TRAIT_MASOCHISM))
 					E.enthrallTally -= power_multiplier
 					E.resistanceTally += power_multiplier
 					E.cooldown += 1
@@ -212,7 +203,7 @@
 			E.resistanceTally -= power_multiplier
 			E.enthrallTally += power_multiplier
 			var/descmessage = "<span class='love'><i>[(E.lewd?"I feel so happy! I'm a good pet who [E.enthrallGender] loves!":"I did a good job!")]</i></span>"
-			SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "enthrallpraise", /datum/mood_event/enthrallpraise, descmessage)
+			L.add_mood_event("enthrallpraise", /datum/mood_event/enthrallpraise, descmessage)
 			E.cooldown += 1
 
 	//PUNISH mixable  works
@@ -224,10 +215,10 @@
 			if(L == user)
 				continue
 			if (E.lewd)
-				if(HAS_TRAIT(L, TRAIT_MASO))
+				if(HAS_TRAIT(L, TRAIT_MASOCHISM))
 					if(ishuman(L))
 						var/mob/living/carbon/human/H = L
-						H.adjust_arousal(3*power_multiplier,maso = TRUE)
+						H.adjust_arousal(3*power_multiplier)
 					descmessage += "And yet, it feels so good..!</span>" //I don't really understand masco, is this the right sort of thing they like?
 					E.enthrallTally += power_multiplier
 					E.resistanceTally -= power_multiplier
@@ -239,7 +230,7 @@
 				E.resistanceTally += power_multiplier
 				E.enthrallTally += power_multiplier
 				E.cooldown += 1
-			SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "enthrallscold", /datum/mood_event/enthrallscold, descmessage)
+			L.add_mood_event("enthrallscold", /datum/mood_event/enthrallscold, descmessage)
 			E.cooldown += 1
 
 
@@ -251,7 +242,6 @@
 			var/mob/living/carbon/C = V
 			var/datum/status_effect/chem/enthrall/E = C.has_status_effect(/datum/status_effect/chem/enthrall)
 			REMOVE_TRAIT(C, TRAIT_MUTE, "enthrall")
-			C.silent = 0
 			if(E.lewd)
 				addtimer(CALLBACK(C, /atom/movable/proc/say, "[E.enthrallGender]"), 5)
 			else
@@ -298,20 +288,20 @@
 					speaktrigger += "[(E.lewd?"You are my whole world and all of my being belongs to you, ":"I cannot think of anything else but aiding your cause, ")] "//Redflags!!
 
 			//mood
-			var/datum/component/mood/mood = H.GetComponent(/datum/component/mood)
-			switch(mood.sanity)
-				if(SANITY_GREAT to INFINITY)
-					speaktrigger += "I'm beyond elated!! " //did you mean byond elated? hohoho
-				if(SANITY_NEUTRAL to SANITY_GREAT)
-					speaktrigger += "I'm really happy! "
-				if(SANITY_DISTURBED to SANITY_NEUTRAL)
-					speaktrigger += "I'm a little sad, "
-				if(SANITY_UNSTABLE to SANITY_DISTURBED)
-					speaktrigger += "I'm really upset, "
-				if(SANITY_CRAZY to SANITY_UNSTABLE)
-					speaktrigger += "I'm about to fall apart without you! "
-				if(SANITY_INSANE to SANITY_CRAZY)
-					speaktrigger += "Hold me, please.. "
+			if(H.mob_mood)
+				switch(H.mob_mood.sanity_level)
+					if(SANITY_GREAT to INFINITY)
+						speaktrigger += "I'm beyond elated!! " //did you mean byond elated? hohoho
+					if(SANITY_NEUTRAL to SANITY_GREAT)
+						speaktrigger += "I'm really happy! "
+					if(SANITY_DISTURBED to SANITY_NEUTRAL)
+						speaktrigger += "I'm a little sad, "
+					if(SANITY_UNSTABLE to SANITY_DISTURBED)
+						speaktrigger += "I'm really upset, "
+					if(SANITY_CRAZY to SANITY_UNSTABLE)
+						speaktrigger += "I'm about to fall apart without you! "
+					if(SANITY_INSANE to SANITY_CRAZY)
+						speaktrigger += "Hold me, please.. "
 
 			//Withdrawal
 			switch(E.withdrawalTick)
@@ -364,14 +354,11 @@
 			//oxygen
 			if (H.getOxyLoss() >= 25)
 				speaktrigger += "I can't breathe! "
-			//blind
-			if (HAS_TRAIT(H, TRAIT_BLIND))
-				speaktrigger += "I can't see! "
 			//deaf..?
 			if (HAS_TRAIT(H, TRAIT_DEAF))//How the heck you managed to get here I have no idea, but just in case!
 				speaktrigger += "I can barely hear you! "
 			//And the brain damage. And the brain damage. And the brain damage. And the brain damage. And the brain damage.
-			switch(H.getOrganLoss(ORGAN_SLOT_BRAIN))
+			switch(H.get_organ_loss(ORGAN_SLOT_BRAIN))
 				if(20 to 40)
 					speaktrigger += "I have a mild head ache, "
 				if(40 to 80)
@@ -403,7 +390,7 @@
 			if (E.phase >= 3) //If target is fully enthralled,
 				ADD_TRAIT(C, TRAIT_MUTE, "enthrall")
 			else
-				C.silent += ((10 * power_multiplier) * E.phase)
+				C.adjust_silence((10 SECONDS * power_multiplier) * E.phase)
 			addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, C, "<span class='notice'>You are unable to speak!</b></span>"), 5)
 			to_chat(user, "<span class='notice'><i>You silence [C].</i></span>")
 			E.cooldown += 3
@@ -413,7 +400,7 @@
 		for(var/mob/living/carbon/C in listeners)
 			var/datum/status_effect/chem/enthrall/E = C.has_status_effect(/datum/status_effect/chem/enthrall)
 			REMOVE_TRAIT(C, TRAIT_MUTE, "enthrall")
-			C.silent = 0
+			C.set_silence(0 SECONDS)
 			E.cooldown += 3
 			to_chat(user, "<span class='notice'><i>You [(E.lewd?"allow [C] to speak again":"encourage [C] to speak again")].</i></span>")
 
@@ -505,7 +492,7 @@
 			var/datum/status_effect/chem/enthrall/E = L.has_status_effect(/datum/status_effect/chem/enthrall)
 			switch(E.phase)
 				if(2 to INFINITY)
-					if(L.m_intent != MOVE_INTENT_WALK)
+					if(L.move_intent != MOVE_INTENT_WALK)
 						L.toggle_move_intent()
 						E.cooldown += 1
 						addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, L, "<span class='notice'>You slow down to a walk.</b></span>"), 5)
@@ -518,7 +505,7 @@
 			var/datum/status_effect/chem/enthrall/E = L.has_status_effect(/datum/status_effect/chem/enthrall)
 			switch(E.phase)
 				if(2 to INFINITY)
-					if(L.m_intent != MOVE_INTENT_RUN)
+					if(L.move_intent != MOVE_INTENT_RUN)
 						L.toggle_move_intent()
 						E.cooldown += 1
 						addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, L, "<span class='notice'>You speed up into a jog!</b></span>"), 5)
@@ -531,7 +518,7 @@
 			var/datum/status_effect/chem/enthrall/E = L.has_status_effect(/datum/status_effect/chem/enthrall)
 			switch(E.phase)
 				if(2 to INFINITY)
-					L.lay_down()
+					L.toggle_resting()
 					E.cooldown += 10
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, L, "[(E.lewd?"<span class='love'>You eagerly lie down!":"<span class='notice'>You suddenly lie down!")]</b></span>"), 5)
 					to_chat(user, "<span class='notice'><i>You encourage [L] to lie down.</i></span>")
@@ -543,7 +530,7 @@
 			var/datum/status_effect/chem/enthrall/E = L.has_status_effect(/datum/status_effect/chem/enthrall)
 			switch(E.phase)
 				if(2 to INFINITY)
-					L.DefaultCombatKnockdown(30 * power_multiplier * E.phase)
+					L.StaminaKnockdown(30 * power_multiplier * E.phase)
 					E.cooldown += 8
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, L, "<span class='notice'>You suddenly drop to the ground!</b></span>"), 5)
 					to_chat(user, "<span class='notice'><i>You encourage [L] to drop down to the ground.</i></span>")
@@ -592,12 +579,10 @@
 							if (trigger2 == "speak" || trigger2 == "echo")
 								var/trigger3 = html_decode(stripped_input(user, "Enter the phrase spoken. Abusing this to self antag is bannable.", MAX_MESSAGE_LEN))
 								E.customTriggers[trigger] = list(trigger2, trigger3)
-								log_reagent("FERMICHEM: [H] has been implanted by [user] with [trigger], triggering [trigger2], to send [trigger3].")
 								if(findtext(trigger3, "admin"))
 									message_admins("FERMICHEM: [user] maybe be trying to abuse MKUltra by implanting by [H] with [trigger], triggering [trigger2], to send [trigger3].")
 							else
 								E.customTriggers[trigger] = trigger2
-								log_reagent("FERMICHEM: [H] has been implanted by [user] with [trigger], triggering [trigger2].")
 							E.mental_capacity -= 5
 							addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, H, "<span class='notice'>[(E.lewd?"your [E.enthrallGender]":"[E.master]")] whispers you a new trigger.</span>"), 5)
 							to_chat(user, "<span class='notice'><i>You sucessfully set the trigger word [trigger] in [H]</i></span>")
@@ -660,7 +645,6 @@
 						objective = replacetext(lowertext(objective), "strangle", "meow at")
 						objective = replacetext(lowertext(objective), "suicide", "self-love")
 						message_admins("[H] has been implanted by [user] with the objective [objective].")
-						log_reagent("FERMICHEM: [H] has been implanted by [user] with the objective [objective] via MKUltra.")
 						addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, H, "<span class='notice'>[(E.lewd?"Your [E.enthrallGender]":"[E.master]")] whispers you a new objective.</span>"), 5)
 						brainwash(H, objective)
 						E.mental_capacity -= 200
@@ -679,7 +663,6 @@
 				var/instill = stripped_input(user, "Instill an emotion in [H].", MAX_MESSAGE_LEN)
 				to_chat(H, "<i>[instill]</i>")
 				to_chat(user, "<span class='notice'><i>You sucessfully instill a feeling in [H]</i></span>")
-				log_reagent("FERMICHEM: [H] has been instilled by [user] with [instill] via MKUltra.")
 				E.cooldown += 1
 
 	//RECOGNISE
@@ -793,7 +776,6 @@
 
 	if(message_admins || debug)//Do you want this in?
 		message_admins("[ADMIN_LOOKUPFLW(user)] has said '[log_message]' with a Velvet Voice, affecting [english_list(listeners)], with a power multiplier of [power_multiplier].")
-	log_reagent("FERMICHEM: [key_name(user)] ckey: [user.key] has said '[log_message]' with a Velvet Voice, affecting [english_list(listeners)], with a power multiplier of [power_multiplier].")
 	SSblackbox.record_feedback("tally", "fermi_chem", 1, "Times people have spoken with a velvet voice")
 	//SSblackbox.record_feedback("tally", "Velvet_voice", 1, log_message) If this is on, it fills the thing up and OOFs the server
 

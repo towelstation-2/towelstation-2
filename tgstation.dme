@@ -8586,6 +8586,8 @@
 #include "modular_towel\code\modules\loadout\categories\toys.dm"
 #include "modular_towel\code\modules\modular_chemistry\reagents\MKULTRA\chem.dm"
 #include "modular_towel\code\modules\modular_chemistry\reagents\MKULTRA\MKUltra.dm"
+#include "modular_towel\code\modules\modular_chemistry\reagents\MKULTRA\moods.dm"
+#include "modular_towel\code\modules\modular_chemistry\reagents\MKULTRA\recipe.dm"
 #include "modular_towel\code\modules\modular_chemistry\reagents\MKULTRA\vocal_cords.dm"
 #include "modular_towel\code\modules\modular_food\smores\smores.dm"
 #include "modular_towel\code\modules\vending\lustwish.dm"
