@@ -142,11 +142,11 @@ Creating a chem with a low purity will make you permanently fall in love with so
 	ph = 10
 	chemical_flags = REAGENT_DONOTSPLIT //Procs on_mob_add when merging into a human
 
-/datum/reagent/fermi/enthrall/on_new(list/src.data)
+/datum/reagent/fermi/enthrall/on_new(list/data)
 	. = ..()
-	creatorID = data["creatorID"]
-	creatorGender = data["creatorGender"]
-	creatorName = data["creatorName"]
+	creatorID = src.data["creatorID"]
+	creatorGender = src.data["creatorGender"]
+	creatorName = src.data["creatorName"]
 	creator = get_mob_by_key(creatorID)
 
 /datum/reagent/fermi/enthrall/on_mob_add(mob/living/carbon/M)
