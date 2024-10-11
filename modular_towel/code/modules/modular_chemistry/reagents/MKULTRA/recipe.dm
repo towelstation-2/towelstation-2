@@ -19,7 +19,7 @@
 	purity_min 				= 0.2
 	reaction_tags = REACTION_TAG_HARD | REACTION_TAG_EXPLOSIVE | REACTION_TAG_OTHER | REACTION_TAG_DANGEROUS
 
-/datum/chemical_reaction/fermi/enthrall/FermiFinish(datum/reagents/holder, atom/my_atom)
+/datum/chemical_reaction/fermi/enthrall/reaction_finish(datum/reagents/holder, atom/my_atom)
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in my_atom.reagents.reagent_list
 	var/datum/reagent/fermi/enthrall/E = locate(/datum/reagent/fermi/enthrall) in my_atom.reagents.reagent_list
 	if(!B || !E)
@@ -42,7 +42,7 @@
 /datum/chemical_reaction/fermi/enthrall/slime
 	required_catalysts = list(/datum/reagent/toxin/slimejelly = 1)
 
-/datum/chemical_reaction/fermi/enthrall/slime/FermiFinish(datum/reagents/holder, atom/my_atom)
+/datum/chemical_reaction/fermi/enthrall/slime/reaction_finish(datum/reagents/holder, atom/my_atom)
 	var/datum/reagent/toxin/slimejelly/B = locate(/datum/reagent/toxin/slimejelly) in my_atom.reagents.reagent_list//The one line change.
 	var/datum/reagent/fermi/enthrall/E = locate(/datum/reagent/fermi/enthrall) in my_atom.reagents.reagent_list
 	if(!B || !E)
