@@ -46,14 +46,18 @@
 /datum/status_effect/chem/enthrall/on_apply()
 	var/mob/living/carbon/M = owner
 	var/datum/reagent/fermi/enthrall/E = locate(/datum/reagent/fermi/enthrall) in M.reagents.reagent_list
-	if(!E)
+	if(!E.data["creatorID"])
 		message_admins("WARNING: FermiChem: No master found in thrall, did you bus in the status? You need to set up the vars manually in the chem if it's not reacted/bussed. Someone set up the reaction/status proc incorrectly if not (Don't use donor blood). Console them with a chemcat plush maybe?")
+		stack_trace("No master found in thrall, did you bus in the status? You need to set up the vars manually in the chem if it's not reacted/bussed. Someone set up the reaction/status proc incorrectly if not (Don't use donor blood). Console them with a chemcat plush maybe?")
 		owner.remove_status_effect(src)
-	enthrallID = E.creatorID
-	enthrallGender = E.creatorGender
+		return ..()
+	enthrallID = E.data["creatorID"]
+	enthrallGender = E.data["creatorGender"]
+	if(M.ckey == enthrallID)
+		//owner.remove_status_effect(src)//At the moment, a user can enthrall themselves, toggle this back in if that should be removed.
+		to_chat(owner, span_warning("some kind of warning message here"))
+		return ..()
 	master = get_mob_by_key(enthrallID)
-	//if(M.ckey == enthrallID)
-	//	owner.remove_status_effect(src)//At the moment, a user can enthrall themselves, toggle this back in if that should be removed.
 	RegisterSignal(owner, COMSIG_LIVING_RESIST, .proc/owner_resist) //Do resistance calc if resist is pressed#
 	RegisterSignal(owner, COMSIG_MOVABLE_HEAR, .proc/owner_hear)
 	mental_capacity = 500 - M.get_organ_loss(ORGAN_SLOT_BRAIN)//It's their brain!
