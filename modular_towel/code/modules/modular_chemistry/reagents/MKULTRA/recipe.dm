@@ -20,8 +20,8 @@
 	reaction_tags = REACTION_TAG_HARD | REACTION_TAG_EXPLOSIVE | REACTION_TAG_OTHER | REACTION_TAG_DANGEROUS
 
 /datum/chemical_reaction/fermi/enthrall/reaction_finish(datum/reagents/holder, atom/my_atom)
-	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in my_atom.reagents.reagent_list
-	var/datum/reagent/fermi/enthrall/E = locate(/datum/reagent/fermi/enthrall) in my_atom.reagents.reagent_list
+	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in holder.reagents.reagent_list
+	var/datum/reagent/fermi/enthrall/E = locate(/datum/reagent/fermi/enthrall) in holder.reagents.reagent_list
 	if(!B || !E)
 		return
 	if(!B.data)
