@@ -27,6 +27,7 @@
 	if(!B.data)
 		my_atom.visible_message("<span class='warning'>The reaction splutters and fails to react properly.</span>") //Just in case
 		E.purity = 0
+		return
 	if (B.data["gender"] == "female")
 		E.data["creatorGender"] = "Mistress"
 		E.creatorGender = "Mistress"
