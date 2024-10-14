@@ -238,7 +238,7 @@ Creating a chem with a low purity will make you permanently fall in love with so
 	else
 		E = M.has_status_effect(/datum/status_effect/chem/enthrall)
 	if(E.lewd)
-		to_chat(M, "<span class='big love'><i>Your mind shatters under the volume of the mild altering chem inside of you, breaking all will and thought completely. Instead the only force driving you now is the instinctual desire to obey and follow [creatorName]. Your highest priority is now to stay by their side and protect them at all costs.</i></span>")
+		to_chat(M, "<span class='big love'><i>Your mind shatters under the volume of the mind altering chem inside of you, breaking all will and thought completely. Instead the only force driving you now is the instinctual desire to obey and follow [creatorName]. Your highest priority is now to stay by their side and protect them at all costs.</i></span>")
 	else
 		to_chat(M, "<span class='big warning'><i>The might volume of chemicals in your system overwhelms your mind, and you suddenly agree with what [creatorName] has been saying. Your highest priority is now to stay by their side and protect them at all costs.</i></span>")
 	M.adjust_slurring(60 SECONDS)

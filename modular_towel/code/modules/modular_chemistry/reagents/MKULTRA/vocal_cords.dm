@@ -133,7 +133,7 @@
 	var/static/regex/wakeup_words = regex("revert|awaken|snap|attention")
 	//phase1
 	var/static/regex/petstatus_words = regex("how are you|what is your status|are you okay")
-	var/static/regex/silence_words = regex("shut up|silence|be silent|ssh|quiet|hush")
+	var/static/regex/silence_words = regex("shut up|silence|be silent|shh|quiet|hush")
 	var/static/regex/speak_words = regex("talk to me|speak")
 	var/static/regex/antiresist_words = regex("unable to resist|give in|stop being difficult")//useful if you think your target is resisting a lot
 	var/static/regex/resist_words = regex("resist|snap out of it|fight")//useful if two enthrallers are fighting
