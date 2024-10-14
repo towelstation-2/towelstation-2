@@ -44,13 +44,86 @@
 	required_catalysts = list(/datum/reagent/toxin/slimejelly = 1)
 
 /datum/chemical_reaction/fermi/enthrall/slime/reaction_finish(datum/reagents/holder, atom/my_atom)
-	var/datum/reagent/toxin/slimejelly/B = locate(/datum/reagent/toxin/slimejelly) in my_atom.reagents.reagent_list//The one line change.
-	var/datum/reagent/fermi/enthrall/E = locate(/datum/reagent/fermi/enthrall) in my_atom.reagents.reagent_list
+	var/datum/reagent/toxin/slimejelly/B = locate(/datum/reagent/toxin/slimejelly) in holder.reagent_list//The one line change.
+	var/datum/reagent/fermi/enthrall/E = locate(/datum/reagent/fermi/enthrall) in holder.reagent_list
 	if(!B || !E)
 		return
 	if(!B.data)
 		my_atom.visible_message("<span class='warning'>The reaction splutters and fails to react properly.</span>") //Just in case
 		E.purity = 0
+		return
+	if (B.data["gender"] == "female")
+		E.data["creatorGender"] = "Mistress"
+		E.creatorGender = "Mistress"
+	else
+		E.data["creatorGender"] = "Master"
+		E.creatorGender = "Master"
+	E.data["creatorName"] = B.data["real_name"]
+	E.creatorName = B.data["real_name"]
+	E.data["creatorID"] = B.data["ckey"]
+	E.creatorID = B.data["ckey"]
+
+//Podpeople
+/datum/chemical_reaction/fermi/enthrall/pod
+	required_catalysts = list(/datum/reagent/water = 1)
+
+/datum/chemical_reaction/fermi/enthrall/pod/reaction_finish(datum/reagents/holder, atom/my_atom)
+	var/datum/reagent/water/B = locate(/datum/reagent/water) in holder.reagent_list//The one line change.
+	var/datum/reagent/fermi/enthrall/E = locate(/datum/reagent/fermi/enthrall) in holder.reagent_list
+	if(!B || !E)
+		return
+	if(!B.data)
+		my_atom.visible_message("<span class='warning'>The reaction splutters and fails to react properly.</span>") //Just in case
+		E.purity = 0
+		return
+	if (B.data["gender"] == "female")
+		E.data["creatorGender"] = "Mistress"
+		E.creatorGender = "Mistress"
+	else
+		E.data["creatorGender"] = "Master"
+		E.creatorGender = "Master"
+	E.data["creatorName"] = B.data["real_name"]
+	E.creatorName = B.data["real_name"]
+	E.data["creatorID"] = B.data["ckey"]
+	E.creatorID = B.data["ckey"]
+
+//Ethereals
+/datum/chemical_reaction/fermi/enthrall/ethereal
+	required_catalysts = list(/datum/reagent/consumable/liquidelectricity = 1)
+
+/datum/chemical_reaction/fermi/enthrall/ethereal/reaction_finish(datum/reagents/holder, atom/my_atom)
+	var/datum/reagent/consumable/liquidelectricity/B = locate(/datum/reagent/consumable/liquidelectricity) in holder.reagent_list//The one line change.
+	var/datum/reagent/fermi/enthrall/E = locate(/datum/reagent/fermi/enthrall) in holder.reagent_list
+	if(!B || !E)
+		return
+	if(!B.data)
+		my_atom.visible_message("<span class='warning'>The reaction splutters and fails to react properly.</span>") //Just in case
+		E.purity = 0
+		return
+	if (B.data["gender"] == "female")
+		E.data["creatorGender"] = "Mistress"
+		E.creatorGender = "Mistress"
+	else
+		E.data["creatorGender"] = "Master"
+		E.creatorGender = "Master"
+	E.data["creatorName"] = B.data["real_name"]
+	E.creatorName = B.data["real_name"]
+	E.data["creatorID"] = B.data["ckey"]
+	E.creatorID = B.data["ckey"]
+
+//Xeno Hybrids -- Does anyone even play them?
+/datum/chemical_reaction/fermi/enthrall/xeno
+	required_catalysts = list(/datum/reagent/toxin/acid = 1)
+
+/datum/chemical_reaction/fermi/enthrall/xeno/reaction_finish(datum/reagents/holder, atom/my_atom)
+	var/datum/reagent/toxin/acid/B = locate(/datum/reagent/toxin/acid) in holder.reagent_list//The one line change.
+	var/datum/reagent/fermi/enthrall/E = locate(/datum/reagent/fermi/enthrall) in holder.reagent_list
+	if(!B || !E)
+		return
+	if(!B.data)
+		my_atom.visible_message("<span class='warning'>The reaction splutters and fails to react properly.</span>") //Just in case
+		E.purity = 0
+		return
 	if (B.data["gender"] == "female")
 		E.data["creatorGender"] = "Mistress"
 		E.creatorGender = "Mistress"
