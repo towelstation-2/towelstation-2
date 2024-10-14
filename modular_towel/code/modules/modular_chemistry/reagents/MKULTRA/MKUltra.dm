@@ -252,57 +252,6 @@ Creating a chem with a low purity will make you permanently fall in love with so
 	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.2)//should be ~30 in total
 	..()
 
-//Creates a gas cloud when the reaction blows up, causing everyone in it to fall in love with someone/something while it's in their system.
-/datum/reagent/fermi/enthrallExplo//Created in a gas cloud when it explodes
-	name = "Gaseous MKUltra"
-	description = "A forbidden deep red gas that overwhelms a foreign body, causing the person they next lay their eyes on to become more interesting. Studies have shown that people are 66% more likely to make friends with this in the air. Produced when MKUltra explodes."
-	color = "#2C051A" // rgb: , 0, 255
-	metabolization_rate = 0.1
-	taste_description = "synthetic chocolate, a base tone of alcohol, and high notes of roses."
-	chemical_flags = REAGENT_DONOTSPLIT
-	var/mob/living/carbon/love
-	var/lewd = FALSE
-
-/datum/reagent/fermi/enthrallExplo/on_mob_life(mob/living/carbon/M)//Love gas, only affects while it's in your system,Gives a positive moodlet if close, gives brain damagea and a negative moodlet if not close enough.
-	if(HAS_TRAIT(M, TRAIT_MINDSHIELD))
-		return ..()
-	if(!M.has_status_effect(/datum/status_effect/in_love))
-		var/list/seen = (M.in_fov(M.client?.view || world.view) - M) | viewers(M.client?.view || world.view, M)
-		for(var/victim in seen)
-			if((isanimal(victim)) || (!isliving(victim)))
-				seen -= victim
-		if(!length(seen))
-			return
-		love = pick(seen)
-		M.apply_status_effect(/datum/status_effect/in_love, love)
-		lewd = (M.client?.prefs?.read_preference(/datum/preference/toggle/erp/sex_toy)) && (love.client?.prefs?.read_preference(/datum/preference/toggle/erp/sex_toy))
-		to_chat(M, "[(lewd?"<span class='love'>":"<span class='warning'>")][(lewd?"You develop a sudden crush on [love], your heart beginning to race as you look upon them with new eyes.":"You suddenly feel like making friends with [love].")] You feel strangely drawn towards them.</span>")
-		SSblackbox.record_feedback("tally", "fermi_chem", 1, "Times people have bonded")
-	else
-		if(get_dist(M, love) < 8)
-			var/message = "[(lewd?"I'm next to my crush..! Eee!":"I'm making friends with [love]!")]"
-			M.add_mood_event("InLove", /datum/mood_event/InLove, message)
-			M.clear_mood_event("MissingLove")
-		else
-			var/message = "[(lewd?"I can't keep my crush off my mind, I need to see them again!":"I really want to make friends with [love]!")]"
-			M.add_mood_event("MissingLove", /datum/mood_event/MissingLove, message)
-			M.clear_mood_event("InLove")
-			if(prob(5))
-				M.Stun(10)
-				M.emote("whimper")//does this exist?
-				to_chat(M, "[(lewd?"<span class='love'>":"<span class='warning'>")] You're overcome with a desire to see [love].</span>")
-				M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.5)//I found out why everyone was so damaged!
-	..()
-
-/datum/reagent/fermi/enthrallExplo/on_mob_delete(mob/living/carbon/M)
-	if(HAS_TRAIT(M, TRAIT_MINDSHIELD))
-		return ..()
-	M.remove_status_effect(/datum/status_effect/in_love)
-	M.clear_mood_event("InLove")
-	M.clear_mood_event("MissingLove")
-	to_chat(M, "[(lewd?"<span class='love'>":"<span class='warning'>")]Your feelings for [love] suddenly vanish!")
-	..()
-
 /datum/reagent/fermi/proc/FallInLove(mob/living/carbon/Lover, mob/living/carbon/Love)
 	if(Lover.has_status_effect(/datum/status_effect/in_love))
 		to_chat(Lover, "<span class='warning'>You are already fully devoted to someone else!</span>")
