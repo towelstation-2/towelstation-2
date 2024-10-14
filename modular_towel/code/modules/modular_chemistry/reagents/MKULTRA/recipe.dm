@@ -17,7 +17,7 @@
 	H_ion_release 			= 0.1
 	rate_up_lim 			= 1
 	purity_min 				= 0.2
-	reaction_tags = REACTION_TAG_MEDIUM | REACTION_TAG_EXPLOSIVE | REACTION_TAG_OTHER | REACTION_TAG_DANGEROUS
+	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_OTHER | REACTION_TAG_DANGEROUS
 
 /datum/chemical_reaction/fermi/enthrall/reaction_finish(datum/reagents/holder, atom/my_atom)
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in holder.reagent_list
