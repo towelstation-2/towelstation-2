@@ -19,6 +19,15 @@
 	purity_min 				= 0.2
 	reaction_tags = REACTION_TAG_HARD | REACTION_TAG_EXPLOSIVE | REACTION_TAG_OTHER | REACTION_TAG_DANGEROUS
 
+//Kaboom
+/datum/chemical_reaction/fermi/enthrall/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
+	. = ..()
+	enthrall_explosion(holder, equilibrium.reacted_vol)
+
+/datum/chemical_reaction/fermi/enthrall/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
+	. = ..()
+	enthrall_explosion(holder, equilibrium.reacted_vol)
+
 /datum/chemical_reaction/fermi/enthrall/reaction_finish(datum/reagents/holder, atom/my_atom)
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in holder.reagent_list
 	var/datum/reagent/fermi/enthrall/E = locate(/datum/reagent/fermi/enthrall) in holder.reagent_list
@@ -134,3 +143,27 @@
 	E.creatorName = B.data["real_name"]
 	E.data["creatorID"] = B.data["ckey"]
 	E.creatorID = B.data["ckey"]
+
+//My le bomb... It le killed people?? || Stolen meth code :)
+/datum/chemical_reaction/fermi/enthrall/proc/enthrall_explosion(datum/reagents/holder, explode_vol)
+	var/power = 5 + round(explode_vol/18, 1) //MKU strengthdiv is 18
+	if(power <= 0)
+		return
+	var/turf/T = get_turf(holder.my_atom)
+	var/inside_msg
+	if(ismob(holder.my_atom))
+		var/mob/M = holder.my_atom
+		inside_msg = " inside [ADMIN_LOOKUPFLW(M)]"
+		return
+	var/lastkey = holder.my_atom.fingerprintslast
+	var/touch_msg = "N/A"
+	if(lastkey)
+		var/mob/toucher = get_mob_by_key(lastkey)
+		touch_msg = "[ADMIN_LOOKUPFLW(toucher)]"
+	if(!istype(holder.my_atom, /obj/machinery/plumbing)) //excludes standard plumbing equipment from spamming admins with this shit
+		message_admins("Reagent explosion reaction occurred at [ADMIN_VERBOSEJMP(T)][inside_msg]. Last Fingerprint: [touch_msg].")
+	log_game("Reagent explosion reaction occurred at [AREACOORD(T)]. Last Fingerprint: [lastkey ? lastkey : "N/A"]." )
+	var/datum/effect_system/reagents_explosion/e = new()
+	e.set_up(power, T, 0, 0)
+	e.start(holder.my_atom)
+	holder.clear_reagents()
