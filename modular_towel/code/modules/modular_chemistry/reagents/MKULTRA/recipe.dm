@@ -17,16 +17,7 @@
 	H_ion_release 			= 0.1
 	rate_up_lim 			= 1
 	purity_min 				= 0.2
-	reaction_tags = REACTION_TAG_HARD | REACTION_TAG_EXPLOSIVE | REACTION_TAG_OTHER | REACTION_TAG_DANGEROUS
-
-//Kaboom
-/datum/chemical_reaction/fermi/enthrall/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
-	. = ..()
-	enthrall_explosion(holder, equilibrium.reacted_vol)
-
-/datum/chemical_reaction/fermi/enthrall/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
-	. = ..()
-	enthrall_explosion(holder, equilibrium.reacted_vol)
+	reaction_tags = REACTION_TAG_MEDIUM | REACTION_TAG_EXPLOSIVE | REACTION_TAG_OTHER | REACTION_TAG_DANGEROUS
 
 /datum/chemical_reaction/fermi/enthrall/reaction_finish(datum/reagents/holder, atom/my_atom)
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in holder.reagent_list
@@ -144,9 +135,18 @@
 	E.data["creatorID"] = B.data["ckey"]
 	E.creatorID = B.data["ckey"]
 
+/*//Kaboom
+/datum/chemical_reaction/fermi/enthrall/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
+	. = ..()
+	enthrall_explosion(holder, equilibrium.reacted_vol)
+
+/datum/chemical_reaction/fermi/enthrall/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
+	. = ..()
+	enthrall_explosion(holder, equilibrium.reacted_vol)
+
 //My le bomb... It le killed people?? || Stolen meth code :)
 /datum/chemical_reaction/fermi/enthrall/proc/enthrall_explosion(datum/reagents/holder, explode_vol)
-	var/power = 5 + round(explode_vol/18, 1) //MKU strengthdiv is 18
+	var/power = 5 + round(explode_vol/12, 1) //MKU strengthdiv is 12, same as meth.
 	if(power <= 0)
 		return
 	var/turf/T = get_turf(holder.my_atom)
@@ -166,4 +166,4 @@
 	var/datum/effect_system/reagents_explosion/e = new()
 	e.set_up(power, T, 0, 0)
 	e.start(holder.my_atom)
-	holder.clear_reagents()
+	holder.clear_reagents()*/ //Commenting this out for a round to see if it fixes the issue of it not taking blood data.
