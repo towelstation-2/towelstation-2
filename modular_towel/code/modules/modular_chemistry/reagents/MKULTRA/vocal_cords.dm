@@ -126,10 +126,10 @@
 
 	//Mixables
 	var/static/regex/enthrall_words = regex("relax|obey|love|serve|so easy|ara ara")
-	var/static/regex/reward_words = regex("good boy|good girl|good pet|good job|splendid|jolly good|bloody brilliant")
-	var/static/regex/punish_words = regex("bad boy|bad girl|bad pet|bad job|spot of bother|gone and done it now|blast it|buggered it up")
+	var/static/regex/reward_words = regex("good boy|good girl|good pet|good job|good")
+	var/static/regex/punish_words = regex("bad boy|bad girl|bad pet|bad job|bad")
 	//phase 0
-	var/static/regex/saymyname_words = regex("say my name|who am i|whoami")
+	var/static/regex/saymyname_words = regex("say my name|who am i")
 	var/static/regex/wakeup_words = regex("revert|awaken|snap|attention")
 	//phase1
 	var/static/regex/petstatus_words = regex("how are you|what is your status|are you okay")
@@ -151,16 +151,16 @@
 	var/static/regex/custom_words = regex("new trigger|listen to me")
 	var/static/regex/custom_words_words = regex("speak|echo|shock|cum|kneel|strip|trance")//What a descriptive name!
 	var/static/regex/custom_echo = regex("obsess|fills your mind|loop")
-	var/static/regex/instill_words = regex("feel|entice|overwhel")
+	var/static/regex/instill_words = regex("feel|entice|overwhelm")
 	var/static/regex/recognise_words = regex("recognise me|did you miss me?")
-	var/static/regex/objective_words = regex("new objective|obey this command|unable to resist|compulsed|word from hq")
-	var/static/regex/heal_words = regex("live|heal|survive|mend|life|pets never die|heroes never die")
+	var/static/regex/objective_words = regex("new objective|obey this command|unable to resist|compelled")
+	var/static/regex/heal_words = regex("live|heal|survive|mend|life")
 	var/static/regex/stun_words = regex("stop|wait|stand still|hold on|halt")
 	var/static/regex/hallucinate_words = regex("get high|hallucinate|trip balls")
 	var/static/regex/hot_words = regex("heat|hot|hell")
 	var/static/regex/cold_words = regex("cold|cool down|chill|freeze")
 	var/static/regex/getup_words = regex("get up|hop to it")
-	var/static/regex/pacify_words = regex("docile|complaisant|friendly|pacifist")
+	var/static/regex/pacify_words = regex("docile|complacent|friendly|pacifist")
 	var/static/regex/charge_words = regex("charge|oorah|attack")
 
 	var/distancelist = list(2,2,1.5,1.3,1.15,1,0.8,0.6,0.5,0.25)
@@ -235,7 +235,7 @@
 
 
 
-	//teir 0
+	//tier 0
 	//SAY MY NAME works
 	if((findtext(message, saymyname_words)))
 		for(var/V in listeners)
@@ -482,6 +482,10 @@
 					for(var/obj/item/W in items)
 						if(W == H.wear_suit)
 							H.dropItemToGround(W, TRUE)
+							return
+						if(W == H.w_uniform && W != H.wear_suit)
+							H.dropItemToGround(W, TRUE)
+							return
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, H, "<span class='[(E.lewd?"love":"warning")]'>Before you can even think about it, you quickly remove your clothes in response to [(E.lewd?"your [E.enthrallGender]'s command'":"[E.master]'s directive'")].</b></span>"), 5)
 					E.cooldown += 10
 
