@@ -340,7 +340,8 @@
 				cooldown += 1 //Cooldown doesn't process till status is done
 
 		else if (status == "pacify")
-			ADD_TRAIT(owner, TRAIT_PACIFISM, "MKUltraStatus")
+			var/mob/living/carbon/carbon_owner = owner
+			carbon_owner.gain_trauma(/datum/brain_trauma/severe/pacifism)
 			status = null
 
 			//Truth serum?
