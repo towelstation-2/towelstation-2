@@ -6,7 +6,7 @@
 	icon_state = "sushi_rice"
 	list_reagents = list(/datum/reagent/consumable/sodiumchloride = 5)
 	tastes = list("rice" = 5, "salt" = 1)
-	foodtype = GRAIN
+	foodtypes = GRAIN
 
 /obj/item/food/sea_weed
 	name = "Sea Weed Sheet"
@@ -14,7 +14,7 @@
 	icon_state = "sea_weed"
 	list_reagents = list(/datum/reagent/consumable/sodiumchloride = 2)
 	tastes = list("plants" = 2, "salt" = 1)
-	foodtype = VEGETABLES
+	foodtypes = VEGETABLES
 
 //////////////////////////Sushi/////////////////////////////////
 /obj/item/food/sushi_basic
@@ -26,7 +26,7 @@
 	bitesize = 1
 	filling_color = "#F2EEEA" //rgb(242, 238, 234)
 	tastes = list("fish" = 1, "rice" = 1, "salt" = 1)
-	foodtype = MEAT | VEGETABLES
+	foodtypes = MEAT | VEGETABLES | SEAFOOD
 
 /obj/item/food/sushi_adv
 	name = "Funa Nigiri"
@@ -37,7 +37,7 @@
 	bitesize = 1
 	filling_color = "#F2EEEA" //rgb(242, 238, 234)
 	tastes = list("fish" = 1, "rice" = 1, "salt" = 1)
-	foodtype = MEAT | VEGETABLES
+	foodtypes = MEAT | VEGETABLES | SEAFOOD
 
 /obj/item/food/sushi_pro
 	name = "Funa Nigiri"
@@ -48,7 +48,7 @@
 	bitesize = 1
 	filling_color = "#F2EEEA" //rgb(242, 238, 234)
 	tastes = list("fish" = 1, "rice" = 1, "salt" = 1)
-	foodtype = MEAT | VEGETABLES
+	foodtypes = MEAT | VEGETABLES | SEAFOOD
 
 /obj/item/food/tobiko
 	name = "Tobiko"
@@ -57,7 +57,7 @@
 	list_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/vitamin = 2)
 	filling_color = "#FF3333" // R225 G051 B051
 	tastes = list("seaweed" = 1, "salty" = 2)
-	foodtype = MEAT | VEGETABLES
+	foodtypes = MEAT | VEGETABLES
 
 /obj/item/food/riceball
 	name = "Onigiri"
@@ -65,7 +65,7 @@
 	icon_state = "riceball"
 	list_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/sodiumchloride = 2)
 	tastes = list("rice" = 4, "salt" = 1)
-	foodtype = GRAIN
+	foodtypes = GRAIN
 
 /obj/item/food/sashimi
 	name = "carp sashimi"
@@ -75,13 +75,13 @@
 	list_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/capsaicin = 5)
 	filling_color = "#FA8072"
 	tastes = list("fish" = 1, "hot peppers" = 1)
-	foodtype = MEAT | TOXIC
+	foodtypes = MEAT | TOXIC | SEAFOOD
 
 /obj/item/food/fishing_sushi
 	icon = 'icons/obj/fish/seafood.dmi'
 	list_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/sodiumchloride = 2)
 	tastes = list("rice" = 4, "salt" = 2, "seaweed" = 2, "fish" = 2)
-	foodtype = GRAIN | MEAT | VEGETABLES
+	foodtypes = GRAIN | MEAT | VEGETABLES | SEAFOOD
 
 /obj/item/food/fishing_sushi/sake_sushi //salmon
 	name = "sake sushi"
@@ -98,9 +98,9 @@
 	desc = "Sushi that has been made with cooked shrimp."
 	icon_state = "sushi_Ebi"
 
-/obj/item/food/fishing_sushi/ikura_sushi //salmon roe
+/obj/item/food/fishing_sushi/ikura_sushi //moonfish roe
 	name = "ikura sushi"
-	desc = "Sushi that has been made with salmon roe."
+	desc = "Sushi that has been made with moonfish roe."
 	icon_state = "sushi_Ikura"
 
 /obj/item/food/fishing_sushi/maguro_sushi //tuna
@@ -124,7 +124,7 @@
 	bonus_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 2)
 	list_reagents = list(/datum/reagent/consumable/nutriment = 6)
 	tastes = list("fish" = 2, "pan seared vegtables" = 1)
-	foodtype = MEAT | VEGETABLES | FRUIT
+	foodtypes = MEAT | VEGETABLES | FRUIT | SEAFOOD
 
 /obj/item/food/fishing/lobster_roll
 	name = "lobster roll"
@@ -133,31 +133,9 @@
 	bonus_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 2)
 	list_reagents = list(/datum/reagent/consumable/nutriment = 4)
 	tastes = list("fish" = 1, "breadcrumbs" = 1)
-	foodtype = MEAT | GRAIN
+	foodtypes = MEAT | GRAIN | SEAFOOD
 
 //////////////////////////Fish Meat/////////////////////////////////
-/obj/item/food/fishmeat
-	icon_state = "fishfillet"
-	bitesize = 6
-	filling_color = "#FA8072"
-	foodtype = MEAT
-	list_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/vitamin = 2)
-	tastes = list("fish" = 1)
-
-/obj/item/food/fishmeat/Initialize()
-	. = ..()
-	eatverb = pick("bite","chew","choke down","gnaw","swallow","chomp")
-
-/obj/item/food/fishmeat/carp
-	name = "carp fillet"
-	desc = "A fillet of carp meat."
-	list_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/toxin/carpotoxin = 2, /datum/reagent/consumable/nutriment/vitamin = 2)
-	cooked_type = /obj/item/food/meat/steak/fish
-	tastes = list("fish" = 1)
-
-/obj/item/food/fishmeat/carp/imitation
-	name = "imitation carp fillet"
-	desc = "Almost just like the real thing, kinda."
 
 /obj/item/food/fishmeat/salmon
 	name = "salmon fillet"

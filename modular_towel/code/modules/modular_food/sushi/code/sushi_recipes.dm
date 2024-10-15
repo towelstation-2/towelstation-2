@@ -117,11 +117,11 @@
 	subcategory = CAT_MISCFOOD
 
 /datum/crafting_recipe/food/sushi_ikura
-	name = "Ikura Sushi (Salmon Roe)"
+	name = "Ikura Sushi (Moonfish Roe)"
 	reqs = list(
 		/datum/reagent/consumable/soysauce = 5,
 		/obj/item/food/sushi_rice = 2,
-		/obj/item/fishyegg/salmon = 2,
+		/obj/item/fishegg/salmon = 2,
 		/obj/item/food/sea_weed = 1
 	)
 	result = /obj/item/food/fishing_sushi/ikura_sushi

@@ -8584,7 +8584,7 @@
 #include "modular_towel\code\game\objects\items\plushes.dm"
 #include "modular_towel\code\modules\loadout\categories\toys.dm"
 #include "modular_towel\code\modules\modular_food\smores\smores.dm"
-#include "modular_towel\code\modules\modular_food\sushi\code\fishies.dm"
+#include "modular_towel\code\modules\modular_food\sushi\code\more_fish.dm"
 #include "modular_towel\code\modules\modular_food\sushi\code\sushi.dm"
 #include "modular_towel\code\modules\modular_food\sushi\code\sushi_recipes.dm"
 #include "modular_zubbers\code\__DEFINES\bloodsucker_defines.dm"
