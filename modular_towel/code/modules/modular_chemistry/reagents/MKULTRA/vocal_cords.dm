@@ -149,7 +149,7 @@
 	//phase 3
 	var/static/regex/statecustom_words = regex("state triggers|state your triggers")
 	var/static/regex/custom_words = regex("new trigger|listen to me")
-	var/static/regex/custom_words_words = regex("speak|echo|shock|cum|kneel|strip|trance")//What a descriptive name!
+	var/static/regex/custom_words_words = regex("speak|echo|shock|kneel|strip|trance")//What a descriptive name!
 	var/static/regex/custom_echo = regex("obsess|fills your mind|loop")
 	var/static/regex/instill_words = regex("feel|entice|overwhelm")
 	var/static/regex/recognise_words = regex("recognise me|did you miss me?")
@@ -576,7 +576,7 @@
 					H.SetStun(1000)
 					if (E.mental_capacity >= 5)
 						var/trigger = html_decode(stripped_input(user, "Enter the trigger phrase", MAX_MESSAGE_LEN))
-						var/custom_words_words_list = list("Speak", "Echo", "Shock", "Cum", "Kneel", "Strip", "Trance", "Cancel")
+						var/custom_words_words_list = list("Speak", "Echo", "Shock", "Kneel", "Strip", "Trance", "Cancel")
 						var/trigger2 = input(user, "Pick an effect", "Effects") in custom_words_words_list
 						trigger2 = lowertext(trigger2)
 						if ((findtext(trigger2, custom_words_words)))

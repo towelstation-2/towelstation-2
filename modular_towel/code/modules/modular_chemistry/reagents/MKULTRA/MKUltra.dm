@@ -33,7 +33,6 @@ antiresist_words
 resist_words
 forget_words
 attract_words
-orgasm_words
 2
 sleep_words
 strip_words
