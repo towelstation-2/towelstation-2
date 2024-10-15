@@ -135,7 +135,7 @@
 	E.data["creatorID"] = B.data["ckey"]
 	E.creatorID = B.data["ckey"]
 
-/*//Kaboom
+//Kaboom
 /datum/chemical_reaction/fermi/enthrall/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
 	. = ..()
 	enthrall_explosion(holder, equilibrium.reacted_vol)
@@ -166,4 +166,4 @@
 	var/datum/effect_system/reagents_explosion/e = new()
 	e.set_up(power, T, 0, 0)
 	e.start(holder.my_atom)
-	holder.clear_reagents()*/ //Commenting this out for a round to see if it fixes the issue of it not taking blood data.
+	holder.clear_reagents()
