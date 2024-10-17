@@ -110,7 +110,7 @@
 	category = CAT_SEAFOOD
 
 /datum/crafting_recipe/food/lobsterdeluxe
-	name = "Fish fry"
+	name = "Lobster Deluxe"
 	reqs = list(
 		/obj/item/food/fishmeat/lobster/cooked = 1,
 		/obj/item/food/grown/citrus/lemon =1,

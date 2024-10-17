@@ -7,6 +7,7 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 1)
 	tastes = list("fish" = 1, "rice" = 1, "salt" = 1)
 	foodtypes = MEAT | VEGETABLES | SEAFOOD
+	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/sushi_adv
 	name = "Funa Nigiri"
@@ -16,6 +17,7 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2)
 	tastes = list("fish" = 1, "rice" = 1, "salt" = 1)
 	foodtypes = MEAT | VEGETABLES | SEAFOOD
+	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/sushi_pro
 	name = "Funa Nigiri"
@@ -25,6 +27,7 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 8, /datum/reagent/consumable/nutriment/vitamin = 1)
 	tastes = list("fish" = 1, "rice" = 1, "salt" = 1)
 	foodtypes = MEAT | VEGETABLES | SEAFOOD
+	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/tobiko
 	name = "Tobiko"
@@ -34,42 +37,38 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/vitamin = 2)
 	tastes = list("seaweed" = 1, "salty" = 2)
 	foodtypes = MEAT | VEGETABLES
+	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/fishing_sushi
 	icon = 'modular_towel/code/modules/modular_food/sushi/icons/seafood.dmi'
 	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/salt = 2)
 	tastes = list("rice" = 4, "salt" = 2, "seaweed" = 2, "fish" = 2)
 	foodtypes = GRAIN | MEAT | VEGETABLES | SEAFOOD
+	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/fishing_sushi/sake_sushi //salmon
 	name = "sake sushi"
 	desc = "Sushi that has been made with salmon."
 	icon_state = "sushi_Sake"
+	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/fishing_sushi/sake_cookedsalmon
 	name = "cooked salmon sushi"
 	desc = "Rather than wanting raw fish, you ordered a cooked salmon sushi."
 	icon_state = "sushi_SmokedSalmon"
+	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/fishing_sushi/ebi_sushi //cooked shrimp
 	name = "ebi sushi"
 	desc = "Sushi that has been made with cooked shrimp."
 	icon_state = "sushi_Ebi"
-
-/obj/item/food/fishing_sushi/ikura_sushi //moonfish roe
-	name = "ikura sushi"
-	desc = "Sushi that has been made with moonfish roe."
-	icon_state = "sushi_Ikura"
+	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/fishing_sushi/maguro_sushi //tuna
 	name = "maguro sushi"
 	desc = "Sushi that has been made with tuna."
 	icon_state = "sushi_Maguro"
-
-/obj/item/food/fishing_sushi/masago_sushi //any roe(?)
-	name = "masago sushi"
-	desc = "Sushi that has been made with some kind of roe?"
-	icon_state = "sushi_Masago"
+	crafting_complexity = FOOD_COMPLEXITY_3
 
 //////////////////////////Lobster/////////////////////////////////
 /obj/item/food/fishing
@@ -82,6 +81,7 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 6)
 	tastes = list("fish" = 2, "pan seared vegtables" = 1)
 	foodtypes = MEAT | VEGETABLES | FRUIT | SEAFOOD
+	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/fishing/lobster_roll
 	name = "lobster roll"
@@ -90,6 +90,7 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 4)
 	tastes = list("fish" = 1, "breadcrumbs" = 1)
 	foodtypes = MEAT | GRAIN | SEAFOOD
+	crafting_complexity = FOOD_COMPLEXITY_2
 
 //////////////////////////Fish Meat/////////////////////////////////
 
