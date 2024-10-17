@@ -4,27 +4,16 @@
 	name = "Sushi Rice"
 	desc = "A bowl of sticky rice for making sushi."
 	icon_state = "sushi_rice"
-	list_reagents = list(/datum/reagent/consumable/sodiumchloride = 5)
+	food_reagents = list(/datum/reagent/consumable/sodiumchloride = 5)
 	tastes = list("rice" = 5, "salt" = 1)
 	foodtypes = GRAIN
-
-/obj/item/food/sea_weed
-	name = "Sea Weed Sheet"
-	desc = "A thin, light salt sheet of plant mater. Used in sushi recipes,"
-	icon_state = "sea_weed"
-	list_reagents = list(/datum/reagent/consumable/sodiumchloride = 2)
-	tastes = list("plants" = 2, "salt" = 1)
-	foodtypes = VEGETABLES
 
 //////////////////////////Sushi/////////////////////////////////
 /obj/item/food/sushi_basic
 	name = "Funa Hosomaki"
 	desc = "A small cylindrical filled with rice and fish."
 	icon_state = "sushi_basic"
-	bonus_reagents = list(/datum/reagent/consumable/nutriment/vitamin = 2)
-	list_reagents = list(/datum/reagent/consumable/nutriment = 1)
-	bitesize = 1
-	filling_color = "#F2EEEA" //rgb(242, 238, 234)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 1)
 	tastes = list("fish" = 1, "rice" = 1, "salt" = 1)
 	foodtypes = MEAT | VEGETABLES | SEAFOOD
 
@@ -32,10 +21,7 @@
 	name = "Funa Nigiri"
 	desc = "A piece of carp lightly placed on some rice."
 	icon_state = "sushi_adv"
-	bonus_reagents = list(/datum/reagent/consumable/nutriment/vitamin = 2)
-	list_reagents = list(/datum/reagent/consumable/nutriment = 2)
-	bitesize = 1
-	filling_color = "#F2EEEA" //rgb(242, 238, 234)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 2)
 	tastes = list("fish" = 1, "rice" = 1, "salt" = 1)
 	foodtypes = MEAT | VEGETABLES | SEAFOOD
 
@@ -43,10 +29,7 @@
 	name = "Funa Nigiri"
 	desc = "A well prepared piece of the best of the carp fillet placed on rice. Looks fancy and fresh!"
 	icon_state = "sushi_pro"
-	bonus_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 2)
-	list_reagents = list(/datum/reagent/consumable/nutriment = 8, /datum/reagent/consumable/nutriment/vitamin = 1)
-	bitesize = 1
-	filling_color = "#F2EEEA" //rgb(242, 238, 234)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 8, /datum/reagent/consumable/nutriment/vitamin = 1)
 	tastes = list("fish" = 1, "rice" = 1, "salt" = 1)
 	foodtypes = MEAT | VEGETABLES | SEAFOOD
 
@@ -54,32 +37,13 @@
 	name = "Tobiko"
 	desc = "Spider eggs wrapped in a thin salted seaweed sheet."
 	icon_state = "sushi_egg"
-	list_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/vitamin = 2)
-	filling_color = "#FF3333" // R225 G051 B051
+	food_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/vitamin = 2)
 	tastes = list("seaweed" = 1, "salty" = 2)
 	foodtypes = MEAT | VEGETABLES
 
-/obj/item/food/riceball
-	name = "Onigiri"
-	desc = "A ball of rice with some light salt and a wrap of seaweed."
-	icon_state = "riceball"
-	list_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/sodiumchloride = 2)
-	tastes = list("rice" = 4, "salt" = 1)
-	foodtypes = GRAIN
-
-/obj/item/food/sashimi
-	name = "carp sashimi"
-	desc = "Celebrate surviving attacks from super mutants by hospitalising yourself."
-	icon_state = "sashimi"
-	bonus_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/capsaicin = 4, /datum/reagent/consumable/nutriment/vitamin = 4)
-	list_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/capsaicin = 5)
-	filling_color = "#FA8072"
-	tastes = list("fish" = 1, "hot peppers" = 1)
-	foodtypes = MEAT | TOXIC | SEAFOOD
-
 /obj/item/food/fishing_sushi
 	icon = 'icons/obj/fish/seafood.dmi'
-	list_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/sodiumchloride = 2)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/sodiumchloride = 2)
 	tastes = list("rice" = 4, "salt" = 2, "seaweed" = 2, "fish" = 2)
 	foodtypes = GRAIN | MEAT | VEGETABLES | SEAFOOD
 
@@ -121,8 +85,7 @@
 	name = "lobster deluxe"
 	desc = "A fancy lobster dish, served with some greens and a lemon."
 	icon_state = "lobster_steamed_deluxe"
-	bonus_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 2)
-	list_reagents = list(/datum/reagent/consumable/nutriment = 6)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 6)
 	tastes = list("fish" = 2, "pan seared vegtables" = 1)
 	foodtypes = MEAT | VEGETABLES | FRUIT | SEAFOOD
 
@@ -130,8 +93,7 @@
 	name = "lobster roll"
 	desc = "A wonderful cooked lobster inbetween a toasted roll."
 	icon_state = "lobster_roll"
-	bonus_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 2)
-	list_reagents = list(/datum/reagent/consumable/nutriment = 4)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 4)
 	tastes = list("fish" = 1, "breadcrumbs" = 1)
 	foodtypes = MEAT | GRAIN | SEAFOOD
 
@@ -140,7 +102,9 @@
 /obj/item/food/fishmeat/salmon
 	name = "salmon fillet"
 	desc = "A raw salmon fillet that has been prepared."
-	cooked_type = /obj/item/food/fishmeat/salmon/cooked
+
+/obj/item/food/fishmeat/salmon/make_grillable()
+	AddComponent(/datum/component/grillable, /obj/item/food/fishmeat/salmon/cooked, rand(40 SECONDS, 50 SECONDS), TRUE, TRUE)
 
 /obj/item/food/fishmeat/salmon/cooked
 	name = "cooked salmon fillet"
@@ -153,7 +117,9 @@
 	desc = "Raw lobster meat that has been prepared."
 	icon = 'icons/obj/fish/food.dmi'
 	icon_state = "raw_lobster_meat"
-	cooked_type = /obj/item/food/fishmeat/lobster/cooked
+
+/obj/item/food/fishmeat/lobster/make_grillable()
+	AddComponent(/datum/component/grillable, /obj/item/food/fishmeat/lobster/cooked, rand(40 SECONDS, 50 SECONDS), TRUE, TRUE)
 
 /obj/item/food/fishmeat/lobster/cooked
 	name = "cooked lobster meat"
@@ -166,7 +132,9 @@
 	desc = "Shrimp that has been prepared to be eaten raw."
 	icon = 'icons/obj/fish/seafood.dmi'
 	icon_state = "shrimp_raw"
-	cooked_type = /obj/item/food/fishmeat/shrimp/cooked
+
+/obj/item/food/fishmeat/shrimp/make_grillable()
+	AddComponent(/datum/component/grillable, /obj/item/food/fishmeat/shrimp/cooked, rand(10 SECONDS, 20 SECONDS), TRUE, TRUE)
 
 /obj/item/food/fishmeat/shrimp/cooked
 	name = "cooked shrimp"

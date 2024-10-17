@@ -11,20 +11,17 @@
 	desc = "Carpe diem, meaning seize the car-- day. It means seize the day."
 	icon_state = "carp"
 	fillet_type = /obj/item/food/fishmeat/carp
-	secondary_drop = /obj/item/fishegg/carp
 
 /obj/item/fish/towel/salmon
 	name = "salmon"
 	desc = "Salmon day, spending all day going upstream just to get screwed and die."
 	icon_state = "salmon"
 	fillet_type = /obj/item/food/fishmeat/salmon
-	secondary_drop = /obj/item/fishegg/salmon
 
 /obj/item/fish/towel/eel
 	name = "electric eel"
 	desc = "When you're down by the sea and an eel bites your knee, that's a moray."
 	icon_state = "electric_eel"
-	secondary_drop = /obj/item/fishegg/eel
 	var/delay_shock = 0
 
 /obj/item/fish/towel/eel/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
@@ -41,11 +38,23 @@
 	desc = "Lobsters have a hard time learning the alphabet, being stuck at C."
 	icon_state = "lobster"
 	fillet_type = /obj/item/food/fishmeat/lobster
-	secondary_drop = /obj/item/fishegg/lobster
 
 /obj/item/fish/towel/shrimp
 	name = "shrimp"
 	desc = "Whenever shrimps fight at bars, they get absolutely battered."
 	icon_state = "shrimp"
 	fillet_type = /obj/item/food/fishmeat/shrimp
-	secondary_drop = /obj/item/fishegg/shrimp
+
+//Portal nonsense
+/datum/fish_source/portal/beach/towel
+	fish_table = list(
+		/obj/item/fish/towel/carp = 10,
+		/obj/item/fish/towel/salmon = 10,
+		/obj/item/fish/towel/lobster = 10,
+		/obj/item/fish/towel/shrimp = 10,
+		/obj/item/fish/towel/eel = 1,
+	)
+	catalog_description = "Sol dimension (Fishing portal generator)"
+	radial_name = "Sol-3"
+	radial_state = "misaligned_question_mark"
+	overlay_state = "portal_beach"
