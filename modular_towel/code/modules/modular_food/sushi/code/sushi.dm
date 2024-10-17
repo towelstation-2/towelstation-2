@@ -1,17 +1,8 @@
-//////////////////////////Sushi Components///////////////////////
-
-/obj/item/food/sushi_rice
-	name = "Sushi Rice"
-	desc = "A bowl of sticky rice for making sushi."
-	icon_state = "sushi_rice"
-	food_reagents = list(/datum/reagent/consumable/sodiumchloride = 5)
-	tastes = list("rice" = 5, "salt" = 1)
-	foodtypes = GRAIN
-
 //////////////////////////Sushi/////////////////////////////////
 /obj/item/food/sushi_basic
 	name = "Funa Hosomaki"
 	desc = "A small cylindrical filled with rice and fish."
+	icon = 'modular_towel/code/modules/modular_food/sushi/icons/seafood.dmi'
 	icon_state = "sushi_basic"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 1)
 	tastes = list("fish" = 1, "rice" = 1, "salt" = 1)
@@ -20,6 +11,7 @@
 /obj/item/food/sushi_adv
 	name = "Funa Nigiri"
 	desc = "A piece of carp lightly placed on some rice."
+	icon = 'modular_towel/code/modules/modular_food/sushi/icons/seafood.dmi'
 	icon_state = "sushi_adv"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2)
 	tastes = list("fish" = 1, "rice" = 1, "salt" = 1)
@@ -28,6 +20,7 @@
 /obj/item/food/sushi_pro
 	name = "Funa Nigiri"
 	desc = "A well prepared piece of the best of the carp fillet placed on rice. Looks fancy and fresh!"
+	icon = 'modular_towel/code/modules/modular_food/sushi/icons/seafood.dmi'
 	icon_state = "sushi_pro"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 8, /datum/reagent/consumable/nutriment/vitamin = 1)
 	tastes = list("fish" = 1, "rice" = 1, "salt" = 1)
@@ -36,14 +29,15 @@
 /obj/item/food/tobiko
 	name = "Tobiko"
 	desc = "Spider eggs wrapped in a thin salted seaweed sheet."
+	icon = 'modular_towel/code/modules/modular_food/sushi/icons/seafood.dmi'
 	icon_state = "sushi_egg"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/vitamin = 2)
 	tastes = list("seaweed" = 1, "salty" = 2)
 	foodtypes = MEAT | VEGETABLES
 
 /obj/item/food/fishing_sushi
-	icon = 'icons/obj/fish/seafood.dmi'
-	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/sodiumchloride = 2)
+	icon = 'modular_towel/code/modules/modular_food/sushi/icons/seafood.dmi'
+	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/salt = 2)
 	tastes = list("rice" = 4, "salt" = 2, "seaweed" = 2, "fish" = 2)
 	foodtypes = GRAIN | MEAT | VEGETABLES | SEAFOOD
 
@@ -109,13 +103,13 @@
 /obj/item/food/fishmeat/salmon/cooked
 	name = "cooked salmon fillet"
 	desc = "A gorgeously cooked salmon fillet that has a sear that is to die for."
-	icon = 'icons/obj/fish/seafood.dmi'
+	icon = 'modular_towel/code/modules/modular_food/sushi/icons/seafood.dmi'
 	icon_state = "smokedsalmon"
 
 /obj/item/food/fishmeat/lobster
 	name = "lobster meat"
 	desc = "Raw lobster meat that has been prepared."
-	icon = 'icons/obj/fish/food.dmi'
+	icon = 'modular_towel/code/modules/modular_food/sushi/icons/lobster.dmi'
 	icon_state = "raw_lobster_meat"
 
 /obj/item/food/fishmeat/lobster/make_grillable()
@@ -124,13 +118,13 @@
 /obj/item/food/fishmeat/lobster/cooked
 	name = "cooked lobster meat"
 	desc = "A deliciously cooked lobster, all ready to consume."
-	icon = 'icons/obj/fish/food.dmi'
+	icon = 'modular_towel/code/modules/modular_food/sushi/icons/lobster.dmi'
 	icon_state = "lobster_steamed_simple"
 
 /obj/item/food/fishmeat/shrimp
 	name = "shrimp"
 	desc = "Shrimp that has been prepared to be eaten raw."
-	icon = 'icons/obj/fish/seafood.dmi'
+	icon = 'modular_towel/code/modules/modular_food/sushi/icons/seafood.dmi'
 	icon_state = "shrimp_raw"
 
 /obj/item/food/fishmeat/shrimp/make_grillable()
@@ -139,5 +133,5 @@
 /obj/item/food/fishmeat/shrimp/cooked
 	name = "cooked shrimp"
 	desc = "Shrimp that has been prepared and then cooked."
-	icon = 'icons/obj/fish/seafood.dmi'
+	icon = 'modular_towel/code/modules/modular_food/sushi/icons/seafood.dmi'
 	icon_state = "shrimp_cooked"

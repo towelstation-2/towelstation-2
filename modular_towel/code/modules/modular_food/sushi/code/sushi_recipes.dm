@@ -1,12 +1,12 @@
 ///////////////////////Sushi Components///////////////////////////
 
-/datum/crafting_recipe/food/sushi_rice
+/datum/crafting_recipe/food/boiledrice
 	name = "Sushi Rice"
 	reqs = list(
 		/datum/reagent/water  = 40,
 		/datum/reagent/consumable/rice = 10
 	)
-	result = /obj/item/food/sushi_rice
+	result = /obj/item/food/boiledrice
 	category = CAT_SEAFOOD
 
 //////////////////////////Sushi/////////////////////////////////
@@ -25,7 +25,7 @@
 	name = "Funa Hosomaki"
 	reqs = list(
 		/datum/reagent/consumable/soysauce = 3,
-		/obj/item/food/sushi_rice = 1,
+		/obj/item/food/boiledrice = 1,
 		/obj/item/food/fishmeat/carp = 2,
 		/obj/item/food/seaweedsheet = 3,
 	)
@@ -36,7 +36,7 @@
 	name = "Funa Nigiri"
 	reqs = list(
 		/datum/reagent/consumable/soysauce = 5,
-		/obj/item/food/sushi_rice = 1,
+		/obj/item/food/boiledrice = 1,
 		/obj/item/food/fishmeat/carp = 1
 	)
 	result = /obj/item/food/sushi_adv
@@ -46,7 +46,7 @@
 	name = "Well made Funa Nigiri"
 	reqs = list(
 		/datum/reagent/consumable/soysauce = 10,
-		/obj/item/food/sushi_rice = 2,
+		/obj/item/food/boiledrice = 2,
 		/obj/item/food/fishmeat/carp = 5,
 		/obj/item/food/seaweedsheet = 1
 	)
@@ -57,7 +57,7 @@
 	name = "Sake Sushi (Salmon)"
 	reqs = list(
 		/datum/reagent/consumable/soysauce = 5,
-		/obj/item/food/sushi_rice = 2,
+		/obj/item/food/boiledrice = 2,
 		/obj/item/food/fishmeat/salmon = 2,
 		/obj/item/food/seaweedsheet = 1
 	)
@@ -68,7 +68,7 @@
 	name = "Cooked Salmon Sushi"
 	reqs = list(
 		/datum/reagent/consumable/soysauce = 5,
-		/obj/item/food/sushi_rice = 2,
+		/obj/item/food/boiledrice = 2,
 		/obj/item/food/fishmeat/salmon/cooked = 2,
 		/obj/item/food/seaweedsheet = 1
 	)
@@ -79,7 +79,7 @@
 	name = "Ebi Sushi (Cooked Shrimp)"
 	reqs = list(
 		/datum/reagent/consumable/soysauce = 5,
-		/obj/item/food/sushi_rice = 2,
+		/obj/item/food/boiledrice = 2,
 		/obj/item/food/fishmeat/shrimp/cooked = 2,
 		/obj/item/food/seaweedsheet = 1
 	)
@@ -90,8 +90,8 @@
 	name = "Maguro Sushi (Tuna)"
 	reqs = list(
 		/datum/reagent/consumable/soysauce = 5,
-		/obj/item/food/sushi_rice = 2,
-		/obj/item/food/tuna = 1,
+		/obj/item/food/boiledrice = 2,
+		/obj/item/food/canned/tuna = 1,
 		/obj/item/food/seaweedsheet = 1
 	)
 	result = /obj/item/food/fishing_sushi/maguro_sushi
