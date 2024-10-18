@@ -46,7 +46,7 @@
 	fillet_type = /obj/item/food/fishmeat/shrimp
 
 //Portal nonsense
-/datum/fish_source/portal/beach/towel
+/datum/fish_source/portal/towel
 	fish_table = list(
 		/obj/item/fish/towel/carp = 10,
 		/obj/item/fish/towel/salmon = 10,
@@ -55,6 +55,6 @@
 		/obj/item/fish/towel/eel = 1,
 	)
 	catalog_description = "Sol dimension (Fishing portal generator)"
-	radial_name = "Sol-3"
+	radial_name = "Earth"
 	radial_state = "misaligned_question_mark"
 	overlay_state = "portal_beach"
