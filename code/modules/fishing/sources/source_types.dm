@@ -36,7 +36,7 @@
 	///The icon state of the overlay shown on the machine when active.
 	var/overlay_state = "portal_aquarium"
 
-/datum/fish_source/portal/beach
+/*/datum/fish_source/portal/beach
 	fish_table = list(
 		//FISHING_DUD = 10, BUBBERSTATION CHANGE: NO DUDS. HOLY SHIT.
 		/obj/item/fish/clownfish = 10,
@@ -47,7 +47,7 @@
 	catalog_description = "Beach dimension (Fishing portal generator)"
 	radial_name = "Beach"
 	radial_state = "palm_beach"
-	overlay_state = "portal_beach"
+	overlay_state = "portal_beach"*/ //Moved to modular_towel/code/modules/modular_food/sushi/code/more_fish.dm
 
 /datum/fish_source/portal/chasm
 	background = "background_lavaland"
