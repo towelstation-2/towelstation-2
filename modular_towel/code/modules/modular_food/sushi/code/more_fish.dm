@@ -46,15 +46,20 @@
 	fillet_type = /obj/item/food/fishmeat/shrimp
 
 //Portal nonsense
-/datum/fish_source/portal/towel
+/datum/fish_source/portal/beach
 	fish_table = list(
+		//FISHING_DUD = 10, BUBBERSTATION CHANGE: NO DUDS. HOLY SHIT.
+		/obj/item/fish/clownfish = 10,
+		/obj/item/fish/pufferfish = 10,
+		/obj/item/fish/cardinal = 10,
+		/obj/item/fish/greenchromis = 10,
 		/obj/item/fish/towel/carp = 10,
 		/obj/item/fish/towel/salmon = 10,
 		/obj/item/fish/towel/lobster = 10,
 		/obj/item/fish/towel/shrimp = 10,
 		/obj/item/fish/towel/eel = 1,
 	)
-	catalog_description = "Sol dimension (Fishing portal generator)"
-	radial_name = "Earth"
-	radial_state = "misaligned_question_mark"
+	catalog_description = "Beach dimension (Fishing portal generator)"
+	radial_name = "Beach"
+	radial_state = "palm_beach"
 	overlay_state = "portal_beach"

@@ -18,7 +18,7 @@ GLOBAL_LIST_EMPTY(scanned_fish_by_techweb)
 	///Further experiments added to the techweb when this one is completed.
 	var/list/next_experiments = list(/datum/experiment/scanning/fish/second)
 	///Completing a experiment may also enable a fish source to be used for use for the portal generator.
-	var/fish_source_reward = list(/datum/fish_source/portal/beach, /datum/fish_source/portal/towel) //TOWEL EDIT: ADDS THE TOWEL PORTAL AREA
+	var/fish_source_reward = /datum/fish_source/portal/beach
 
 
 /**
