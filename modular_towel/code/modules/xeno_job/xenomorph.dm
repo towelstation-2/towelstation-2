@@ -15,20 +15,23 @@
 	display_order = JOB_DISPLAY_ORDER_XENOMORPH_CREW
 
 	departments_list = list(
-		/datum/job_department/undefined,
+		/datum/job_department/assistant,
 		)
 	random_spawns_possible = FALSE
 	job_flags = JOB_NEW_PLAYER_JOINABLE | JOB_EQUIP_RANK | JOB_CANNOT_OPEN_SLOTS
 
+/datum/job/xenomorph_crew/get_roundstart_spawn_point()
+	if (length(GLOB.start_landmarks_list["Assistant"]))
+		return pick(GLOB.start_landmarks_list["Assistant"])
+	return ..()
+
+/datum/job/xenomorph_crew/get_latejoin_spawn_point()
+	if (length(GLOB.start_landmarks_list["Assistant"]))
+		return pick(GLOB.start_landmarks_list["Assistant"])
+	return ..()
 
 /datum/job/xenomorph_crew/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()
 	if(!isalien(spawned))
 		return
 	spawned.apply_pref_name(/datum/preference/name/xeno_crew, player_client)
-
-/datum/job/xenomorph_crew/get_roundstart_spawn_point()
-	return /obj/effect/landmark/generic_maintenance_landmark
-
-/datum/job/xenomorph_crew/get_latejoin_spawn_point()
-	return /obj/effect/landmark/generic_maintenance_landmark
