@@ -28,11 +28,7 @@
 	spawned.apply_pref_name(/datum/preference/name/xeno_crew, player_client)
 
 /datum/job/xenomorph_crew/get_roundstart_spawn_point()
-	return get_latejoin_spawn_point()
+	return /obj/effect/landmark/generic_maintenance_landmark
 
 /datum/job/xenomorph_crew/get_latejoin_spawn_point()
-	for(var/obj/effect/landmark/generic_maintenance_landmark/spawn_point in GLOB.landmarks_list)
-		if(spawn_point)
-			return
-		else
-			CRASH("Failed to find any xenomorph crew spawn points.")
+	return /obj/effect/landmark/generic_maintenance_landmark
