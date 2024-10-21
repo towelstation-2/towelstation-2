@@ -10,9 +10,9 @@
 	exp_requirements = 120
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
-	config_tag = "CYBORG"
+	config_tag = "XENO_CREW"
 
-	display_order = JOB_DISPLAY_ORDER_CYBORG
+	display_order = JOB_DISPLAY_ORDER_XENOMORPH_CREW
 
 	departments_list = list(
 		/datum/job_department/undefined,
@@ -25,3 +25,14 @@
 	. = ..()
 	if(!isalien(spawned))
 		return
+	spawned.apply_pref_name(/datum/preference/name/xeno_crew, player_client)
+
+/datum/job/xenomorph_crew/get_roundstart_spawn_point()
+	return get_latejoin_spawn_point()
+
+/datum/job/xenomorph_crew/get_latejoin_spawn_point()
+	for(var/obj/effect/landmark/generic_maintenance_landmark/spawn_point in GLOB.landmarks_list)
+		if(spawn_point)
+			return
+		else
+			CRASH("Failed to find any xenomorph crew spawn points.")

@@ -83,7 +83,10 @@
 		headshot += preferences?.read_preference(/datum/preference/text/headshot/silicon)
 		name = holder.name
 		//BUBBER EDIT END: SILICON HEADSHOT
-
+	//TOWEL EDIT BEGIN: XENO CREW PREFS
+	if(preferences && isalien(holder))
+		flavor_text = preferences?.read_preference(/datum/preference/text/xeno_crew_flavor_text)
+		//TOWEL EDIT END: XENO CREW PREFS
 	if(ishuman(holder))
 		var/mob/living/carbon/human/holder_human = holder
 		obscured = (holder_human.wear_mask && (holder_human.wear_mask.flags_inv & HIDEFACE)) && obscurity_examine_pref || (holder_human.head && (holder_human.head.flags_inv & HIDEFACE) && obscurity_examine_pref) // BUBBERSTATION EDIT - EXAMINE PREFS
