@@ -12,6 +12,10 @@
 	var/demihumans = preferences?.read_preference(/datum/preference/choiced/directory_character_prefs/demihuman_pref)
 	var/humans = preferences?.read_preference(/datum/preference/choiced/directory_character_prefs/human_pref)
 	var/show_nsfw_flavor_text = preferences?.read_preference(/datum/preference/choiced/show_nsfw_flavor_text)
+	//TOWEL ADDITION START: XENOMORPH CREW
+	if(isalien(holder) && !(show_nsfw_flavor_text == "Never"))
+		flavor_text_nsfw = preferences?.read_preference(/datum/preference/text/flavor_text_nsfw/xeno_crew)
+		//TOWEL ADDITION END: XENOMORPH CREW
 	if(issilicon(holder) && !(show_nsfw_flavor_text == "Never"))
 		flavor_text_nsfw = preferences?.read_preference(/datum/preference/text/flavor_text_nsfw/silicon)
 		headshot_nsfw += preferences?.read_preference(/datum/preference/text/headshot/silicon/nsfw)
