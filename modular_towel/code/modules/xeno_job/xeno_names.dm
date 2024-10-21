@@ -7,7 +7,7 @@
 	can_randomize = FALSE
 
 	explanation = "Xenomorph crew name"
-	group = "backup_human"
+	group = "xeno_crew"
 	relevant_job = /datum/job/xenomorph_crew
 
 /datum/preference/name/xeno_crew/create_default_value()
