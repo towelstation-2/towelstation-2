@@ -53,6 +53,8 @@
 				display = prefs.read_preference(/datum/preference/name/cyborg)
 			if(JOB_MIME)
 				display = prefs.read_preference(/datum/preference/name/mime)
+			if(JOB_XENOMORPH_CREW) //TOWEL EDIT START - XENO CREW
+				display = prefs.read_preference(/datum/preference/name/xeno_crew) //TOWEL EDIT END - XENO CREW
 			else
 				display = prefs.read_preference(/datum/preference/name/real_name)
 			//If our player is a member of Command or a Silicon, we want to sort them to the top of the list. Otherwise, just add them to the end of the list.
