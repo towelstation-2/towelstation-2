@@ -164,6 +164,16 @@
 	gender = MALE
 	squeak_override = list('sound/mobs/non-humanoids/dog/growl2.ogg' = 1)
 
+/obj/item/toy/plush/bottomsynf
+	name = "CentCom Synth Fox Plush"
+	desc = "The plush of a synth fox who enjoys being high in the chain of command. Or so it seems. It's wearing its favourite CentCom formal coat."
+	icon = 'modular_zubbers/icons/obj/toys/plushes.dmi'
+	icon_state = "bottomsynf"
+	attack_verb_continuous = list("emags", "hacks", "geckers")
+	attack_verb_simple = list("beeps", "boops", "pings", "geckers")
+	gender = MALE
+	squeak_override = list('sound/machines/terminal_alert_short.ogg' = 1)
+
 // Silly plush for kurzaen, sprited and coded by Waterpig
 // Spontaneously combusts when touched by other plushies
 /obj/item/toy/plush/cat_annoying
@@ -196,3 +206,22 @@
 	new /obj/effect/decal/cleanable/ash(get_turf(src))
 	src.visible_message(span_warning("The [src.name] turns to ash!"))
 	qdel(src)
+
+// Plush for Vanilla
+/obj/item/toy/plush/suspicious_protogen
+	name = "\improper Suspicious protogen plush"
+	desc = "A suspicious pink looking protogen plushie commonly seen roaming the station almost everywhere, \
+			perfect for cuddling when you feel upset at something."
+	icon = 'modular_zubbers/icons/obj/toys/plushes.dmi'
+	icon_state = "pinkproot"
+	gender = FEMALE
+	squeak_override = list('modular_skyrat/modules/emotes/sound/emotes/dwoop.ogg' = 1)
+
+// Plush for ZeferwasnttakenFR
+/obj/item/toy/plush/foxy_plush
+	name = "tiny prankster fox plush"
+	desc = "A fox plush made to look like a certain prankster fox. Unsuprisingly it also smells like ocean breeze and a nice warm forge. \ Batteries not included for the plastic arm!"
+	icon = 'modular_zubbers/icons/obj/toys/plushes.dmi'
+	icon_state = "FoxyPlush"
+	gender = MALE
+	squeak_override = list('modular_skyrat/modules/emotes/sound/emotes/claponce1.ogg' = 1)

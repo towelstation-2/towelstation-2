@@ -4,7 +4,6 @@
 	icon = FA_ICON_HORSE
 	value = 4
 	mob_trait = TRAIT_PET_OWNER
-	veteran_only = TRUE
 	gain_text = span_notice("You brought your pet with you to work.")
 	lose_text = span_danger("You feel lonely, as if leaving somebody behind...")
 	medical_record_text = "Patient mentions their fondness for their pet."
@@ -34,14 +33,12 @@
 	var/new_desc = client_source?.prefs.read_preference(/datum/preference/text/pet_desc)
 	if (new_desc)
 		pet.desc = new_desc
-// BUBBER EDIT BEGIN
 	var/new_gender = client_source?.prefs.read_preference(/datum/preference/choiced/pet_gender)
 	if (new_gender == "Random")
 		pet.gender = pick(list(MALE, FEMALE))
 	else if (new_gender)
 		pet.gender = new_gender
 	pet.befriend(quirk_holder) // Make sure the player is a friend.
-// BUBBER EDIT END
 	carrier.add_occupant(pet)
 	give_item_to_holder(
 		carrier,
