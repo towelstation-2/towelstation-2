@@ -12,7 +12,6 @@
 	value = 0
 	mob_trait = TRAIT_OVERSIZED
 	icon = FA_ICON_EXPAND_ARROWS_ALT
-	veteran_only = TRUE
 	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_CHANGES_APPEARANCE
 
 /datum/quirk/oversized/add(client/client_source)
@@ -32,7 +31,7 @@
 	human_holder.physiology.hunger_mod *= OVERSIZED_HUNGER_MOD //50% hungrier
 	human_holder.add_movespeed_modifier(/datum/movespeed_modifier/oversized)
 	var/obj/item/organ/internal/stomach/old_stomach = human_holder.get_organ_slot(ORGAN_SLOT_STOMACH)
-	if(!istype(old_stomach) || old_stomach.organ_flags & ORGAN_ROBOTIC || old_stomach.organ_traits & TRAIT_NOHUNGER)	//BUBBERSTATION EDIT: make sure synths and species that don't need to eat don't get huge guts
+	if(!istype(old_stomach) || old_stomach.organ_flags & ORGAN_ROBOTIC || old_stomach.organ_traits & TRAIT_NOHUNGER)
 		return
 	old_stomach.Remove(human_holder, special = TRUE)
 	qdel(old_stomach)

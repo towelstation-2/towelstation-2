@@ -66,3 +66,15 @@
 /datum/loadout_item/toys/cat_annoying
 	name = "Annoying Cat Plush"
 	item_path = /obj/item/toy/plush/cat_annoying
+
+/datum/loadout_item/toys/suspicious_protogen
+	name = "Suspicious Protogen Plush"
+	item_path = /obj/item/toy/plush/suspicious_protogen
+
+/datum/loadout_item/toys/foxy_plush
+	name = "Colorful Fox Plush"
+	item_path = /obj/item/toy/plush/foxy_plush
+
+/datum/loadout_item/toys/bottomsynf
+	name = "CentCom Synth Fox Plush"
+	item_path = /obj/item/toy/plush/bottomsynf
