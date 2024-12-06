@@ -120,7 +120,7 @@
 	///The name of this option shown in the radial menu on the fishing portal generator
 	var/radial_name = "Aquarium"
 
-/datum/fish_source/portal/beach
+/*/datum/fish_source/portal/beach
 	fish_table = list(
 		//FISHING_DUD = 10, BUBBERSTATION CHANGE: NO DUDS. HOLY SHIT.
 		/obj/effect/spawner/message_in_a_bottle = 3,
@@ -134,7 +134,7 @@
 	catalog_description = "Beach dimension (Fishing portal generator)"
 	radial_name = "Beach"
 	radial_state = "palm_beach"
-	overlay_state = "portal_beach"
+	overlay_state = "portal_beach"*/ //Moved to modular_towel/code/modules/modular_food/sushi/code/more_fish.dm
 
 /datum/fish_source/portal/beach/on_fishing_spot_init(datum/component/fishing_spot/spot)
 	ADD_TRAIT(spot.parent, TRAIT_MESSAGE_IN_A_BOTTLE_LOCATION, INNATE_TRAIT)
