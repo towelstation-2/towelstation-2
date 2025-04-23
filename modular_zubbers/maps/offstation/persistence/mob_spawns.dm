@@ -12,7 +12,7 @@
 	icon = 'icons/obj/machines/sleeper.dmi'
 	icon_state = "sleeper_s"
 	prompt_name = "Persistence Personnel"
-	you_are_text = "You are a Syndicate operative, employed as part of a crew aboard a landcrawler. Your mission objectives are to harvest materials, build outposts, produce goods, andv advance the interests of your company"
+	you_are_text = "You are a Syndicate operative, employed as part of a crew aboard a landcrawler. Your mission objectives are to harvest materials, build outposts, produce goods, and advance the interests of your company"
 	flavour_text = "You have been deployed into enemy territory. Continue working the best you can, and keep a low profile"
 	quirks_enabled = TRUE
 	random_appearance = FALSE
@@ -32,17 +32,17 @@
 /obj/effect/mob_spawn/ghost_role/human/persistence/syndicate
 	name = "Syndicate Operative"
 	prompt_name = "a Syndicate Operative"
-	you_are_text = "you are an Operative assigned to the Syndicate Land Crawler Persistence, employed onboard for reasons that are yours"
-	flavour_text = "The jointly managed Persistence mining rig has been assigned to stealthly monitor Nanotrasen assets. Your orders are to maintain the ship's integrity, perform you duties and keep a low profile while maintaing your front as a mining operation."
-	important_text = "You are NOT an antagonist and the round does not center the Persistence. You MUST submit an Opfor or Adminhelp when escalating against the station and its crew"
+	you_are_text = "You are a Syndicate operative, employed as part of a crew aboard a landcrawler."
+	flavour_text = "The Syndicate managed Persistence mining rig has been deployed into enemy territory to stealthily monitor Nanotrasen assets. Your orders are to maintain the ship's integrity, perform your duties and keep a low profile while maintaining your front as a mining operation."
+	important_text = "You are NOT an antagonist and the round does not center the Persistence. You MUST submit an Opfor or Adminhelp for significant interaction with the station and its crew"
 	outfit = /datum/outfit/persistence/syndicate
 
 /obj/effect/mob_spawn/ghost_role/human/persistence/command
 	name = "Syndicate Command Operative"
 	prompt_name = "a Syndicate leader"
 	you_are_text = "you are a Syndicate Command Operative assigned to lead the SSV Persistence and guide it forward in its goals"
-	flavour_text = "The jointly managed Persistence mining rig has been assigned to stealthly monitor Nanotrasen assets under the cover of a legal mining operation Your orders are help lead the Persistence while ensuring a low profile is maintained."
-	important_text = "You are a command role and maintained at a higher standard. You are NOT an antagonist and the round does not center around the Persistence. You MUST submit an Opfor or Adminhelp when escalating against the station and its crew"
+	flavour_text = "The Syndicate managed Persistence mining rig has been deployed into enemy territory to stealthly monitor Nanotrasen assets under the cover of a legal mining operation. Your orders are to lead the Persistence while ensuring a low profile is maintained."
+	important_text = "You are a command role and held to a higher standard. You are NOT an antagonist and the round does not center around the Persistence. You MUST submit an Opfor or Adminhelp for significant interaction with the station and its crew"
 	outfit = /datum/outfit/persistence/command
 
 /obj/effect/mob_spawn/ghost_role/human/persistence/prisoner
@@ -50,11 +50,38 @@
 	prompt_name = "a Syndicate hostage"
 	you_are_text = "You are a hostage onboard an unknown vessel"
 	flavour_text = "Unaware of where you are, all you know is you are a prisoner. The plastitanium should clue you into who your captors are... as for why you're here? That's for you to know, and for us to find out."
-	important_text = "You are not an antagonist. You are still bound to the Roleplay Rules regarding escalation. Syndicate personnel can throw you into lava or plasma outside if you antagonize them."
+	important_text = "You are not an antagonist. You are still bound to the Roleplay Rules regarding escalation. Syndicate personnel will throw you into lava or plasma outside if you antagonize them."
 	outfit = /datum/outfit/persistence/prisoner
 	computer_area = /area/ruin/space/has_grav/bubbers/persistance/sec/prison
 	give_exploitables = FALSE
 
+/obj/effect/mob_spawn/ghost_role/robot/persistence
+	name = "Syndicate Cyborg Storage"
+	prompt_name = "a syndicate robot"
+	icon = 'modular_skyrat/modules/ghostcafe/icons/robot_storage.dmi'
+	icon_state = "robostorage"
+	anchored = TRUE
+	density = FALSE
+	spawner_job_path = /datum/job/persistence
+	you_are_text = "You are a Syndicate cyborg, assigned to be part of a crew aboard a landcrawler"
+	flavour_text = "You have been deployed into enemy territory. Continue working the best you can, and keep a low profile."
+	deletes_on_zero_uses_left = TRUE
+
+/obj/effect/mob_spawn/ghost_role/robot/persistence/special(mob/living/silicon/robot/new_spawn)
+	. = ..()
+	if(new_spawn.client) //It should have a client, right?
+		new_spawn.faction += ROLE_SYNDICATE
+		new_spawn.faction += ROLE_PERSISTENCE //This is the one to select the cyborg model.
+		new_spawn.radio.keyslot = new /obj/item/encryptionkey/headset_syndicate/cybersun(src)
+		new_spawn.radio.recalculateChannels()
+		new_spawn.UnlinkSelf() //This should prevent AI linking and consoles to see or lock them down.
+		new_spawn.SetEmagged(TRUE) //just to be sure.
+		new_spawn.laws = new /datum/ai_laws/persistence()
+		new_spawn.show_laws() //Check your laws.
+		new_spawn.custom_name = null //Taken from ghostcafe, otherwise it'll lead to a runtime if random_appeareance is set to FALSE.
+		new_spawn.updatename(new_spawn.client)
+		new_spawn.transfer_emote_pref(new_spawn.client)
+		new_spawn.gender = NEUTER
 // crew spawners
 
 /obj/effect/mob_spawn/ghost_role/human/persistence/syndicate/service
@@ -129,11 +156,50 @@
 
 //Persistence Roles
 
+/obj/item/robot_model/syndicatejack/dauntless //kinda count as a outfit, nah?
+	basic_modules = list(
+		/obj/item/assembly/flash/cyborg,
+		/obj/item/extinguisher,
+		/obj/item/weldingtool/electric,
+		/obj/item/multitool/cyborg,
+		/obj/item/crowbar/cyborg/power,
+		/obj/item/screwdriver/cyborg/power,
+		/obj/item/construction/rcd/borg/syndicate,
+		/obj/item/pipe_dispenser,
+		/obj/item/lightreplacer/cyborg,
+		/obj/item/stack/cable_coil,
+		/obj/item/stack/sheet/iron,
+		/obj/item/stack/rods/cyborg,
+		/obj/item/stack/sheet/glass,
+		/obj/item/stack/tile/iron/base/cyborg,
+		/obj/item/storage/part_replacer/cyborg,
+		/obj/item/t_scanner,
+		/obj/item/analyzer,
+		/obj/item/assembly/signaler/cyborg,
+		/obj/item/holosign_creator/atmos,
+		/obj/item/borg/apparatus/circuit,
+		/obj/item/borg/apparatus/sheet_manipulator,
+		/obj/item/electroadaptive_pseudocircuit,
+		/obj/item/shockpaddles/cyborg,
+		/obj/item/healthanalyzer/advanced,
+		/obj/item/surgical_drapes,
+		/obj/item/retractor/advanced,
+		/obj/item/cautery/advanced,
+		/obj/item/scalpel/advanced,
+		/obj/item/stack/medical/gauze,
+		/obj/item/borg/cyborghug/medical,
+		/obj/item/borg/lollipop,
+		/obj/item/borg/apparatus/beaker,
+		/obj/item/restraints/handcuffs/cable/zipties,
+		/obj/item/borg/sight/meson,
+		/obj/item/borg_shapeshifter/dauntless
+		)
+
 /datum/outfit/persistence/syndicate
 	name = "Persistence Operative"
 	uniform = /obj/item/clothing/under/syndicate/skyrat/tactical
 	shoes = /obj/item/clothing/shoes/combat
-	ears = /obj/item/radio/headset/interdyne
+	ears = /obj/item/radio/headset/syndicateciv/staff
 	back = /obj/item/storage/backpack
 	backpack_contents = list(
 		/obj/item/storage/box/survival = 1,
@@ -225,7 +291,7 @@
 	head = /obj/item/clothing/head/helmet/swat/ds
 	glasses = /obj/item/clothing/glasses/hud/security/sunglasses/redsec
 	mask = /obj/item/clothing/mask/gas/syndicate
-	ears = /obj/item/radio/headset/interdyne
+	ears = /obj/item/radio/headset/syndicateciv/staff
 
 /datum/outfit/persistence/syndicate/quartermaster
 	name = "Persistence Cargo Tech"
@@ -244,7 +310,7 @@
 		/obj/item/choice_beacon/syndicateoffstation = 1,
 		)
 	mask = /obj/item/clothing/mask/gas/syndicate
-	ears = /obj/item/radio/headset/interdyne
+	ears = /obj/item/radio/headset/syndicateciv/staff
 	l_pocket = /obj/item/card/mining_point_card
 	r_pocket = /obj/item/mining_voucher
 	head = /obj/item/clothing/head/soft/black
@@ -270,7 +336,7 @@
 	name = "Persistence Command Operative"
 	uniform = /obj/item/clothing/under/syndicate/skyrat/tactical
 	shoes = /obj/item/clothing/shoes/combat
-	ears = /obj/item/radio/headset/interdyne/command
+	ears = /obj/item/radio/headset/syndicateciv/command
 	back = /obj/item/storage/backpack
 	backpack_contents = list(
 		/obj/item/storage/box/survival = 1,
@@ -328,3 +394,7 @@
 /datum/outfit/persistence/command/post_equip(mob/living/carbon/human/syndicate)
 	syndicate.faction |= ROLE_SYNDICATE
 	return ..()
+
+//Give cyborg a specific chameleon item that do not disrupt, still lose power though.
+/obj/item/borg_shapeshifter/dauntless
+	signalCache = list()
