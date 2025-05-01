@@ -13,9 +13,7 @@
 	maximum_antags = 5
 	maximum_antags_global = 5
 
-	typepath = /datum/round_event/antagonist/team/nukie
-
-	ruleset_lazy_templates = list(LAZY_TEMPLATE_KEY_NUKIEBASE)
+	typepath = /datum/round_event/antagonist/team/assault_operative
 
 /datum/round_event/antagonist/team/assault_operative
 	var/datum/job/job_type = /datum/job/assault_operative
